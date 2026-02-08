@@ -1,1 +1,28 @@
-<p>inicio works!</p>
+<!-- HERO -->
+<section class="hero">
+  <h1>El alma del maguey, destilada con historia</h1>
+  <p>
+    Destilados de pulque y productos del maguey, hechos con respeto a la tierra hidalguense.
+  </p>
+</section>
+
+<!-- SECCIÓN CENTRAL -->
+<section class="middle">
+  <img class="ornament ornament--left" src="assets/ornamento-maguey.png" alt="Ornamento" />
+
+  <div class="cards">
+    @for (c of cards; track c.pill; let i = $index) {
+      <a class="card" [routerLink]="c.link" [style.--d]="(i * 90) + 'ms'">
+        <span class="pill">{{ c.pill }}</span>
+
+        <h3 class="title">{{ c.title }}</h3>
+        <p class="text">{{ c.text }}</p>
+
+        <!-- flechita decorativa -->
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    }
+  </div>
+
+  <img class="ornament ornament--right" src="assets/ornamento-maguey.png" alt="Ornamento" />
+</section>
