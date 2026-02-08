@@ -1,3 +1,9 @@
+:host {
+  display: block;
+  font-family: Helvetica, Arial, sans-serif;
+  background: #d8d8d8;
+}
+
 /* =========================
    Animaciones base
 ========================= */
@@ -21,22 +27,24 @@ a, button, input, select, textarea { -webkit-tap-highlight-color: transparent; }
 button { font-family: inherit; }
 
 /* =========================
-   HERO
+   HERO (clon de INICIO + cajas decorativas)
 ========================= */
-.hero-pedidos {
-  height: 170px;
+.hero-pedidos{
+  /* ✅ EXACTO igual que INICIO */
   background:
-    radial-gradient(circle at top, rgba(255,255,255,0.08), transparent 58%),
-    linear-gradient(#274b3a, #0f1f18);
-  display: grid;
-  grid-template-columns: 260px 1fr 260px;
-  align-items: center;
-  padding: 0 44px;
+    radial-gradient(1100px 420px at 50% 35%, rgba(126, 170, 140, 0.30), transparent 60%),
+    linear-gradient(180deg, #0f241a 0%, #244c35 55%, #0f241a 100%);
+  padding: 56px 16px 58px;
+  text-align: center;
+  color: #ffffff;
+
+  /* ✅ para posicionar las cajas sin afectar tamaño */
   position: relative;
   overflow: hidden;
 }
 
-.hero-pedidos::after {
+/* tu sheen */
+.hero-pedidos::after{
   content: "";
   position: absolute;
   top: -40%;
@@ -48,21 +56,72 @@ button { font-family: inherit; }
   animation: ccSheen 5.5s ease-in-out infinite;
 }
 
-.hero-text { text-align: center; color: #fff; position: relative; z-index: 1; }
-.hero-text h1 { margin: 0; font-size: 34px; font-weight: 500; letter-spacing: .2px; }
-.hero-text p { margin: 10px 0 0; font-size: 13px; font-weight: 700; opacity: .98; }
+/* ✅ El texto se comporta como INICIO */
+.hero-text{
+  position: relative;
+  z-index: 1;
+}
 
-.hero-caja {
+/* ✅ OJO: ahora apuntamos al h1/p como en INICIO */
+.hero-pedidos h1{
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(32px, 3.5vw, 48px);
+  letter-spacing: 0.3px;
+}
+
+.hero-pedidos p{
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* ✅ Cajas decorativas: NO modifican el alto del hero */
+.hero-caja{
   width: 170px;
   height: 110px;
   object-fit: contain;
   filter: drop-shadow(0 10px 14px rgba(0,0,0,0.35));
   animation: ccGlow 3.6s ease-in-out infinite;
-  position: relative;
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
   z-index: 1;
+  pointer-events: none;
 }
-.hero-caja.left { justify-self: start; }
-.hero-caja.right { justify-self: end; }
+
+.hero-caja.left{ left: 44px; }
+.hero-caja.right{ right: 44px; }
+
+/* =========================
+   Responsive (móvil) - igual feeling que INICIO
+========================= */
+@media (max-width: 640px){
+  .hero-caja{ display: none; }
+
+  /* el clamp ya se adapta, pero aquí lo “amarramos” por si algo global lo pisa */
+  .hero-pedidos h1{
+    font-size: clamp(26px, 6vw, 34px);
+  }
+}
+
+
+/* =========================
+   Responsive (móvil)
+========================= */
+@media (max-width: 640px) {
+  .hero-pedidos {
+    grid-template-columns: 1fr;
+    padding: 56px 16px 58px; /* ✅ mismo que INICIO */
+    gap: 12px;
+  }
+
+  .hero-caja { display: none; }
+
+  /* en móvil INICIO baja por clamp; aquí lo mantengo consistente */
+  .hero-text h1 { font-size: clamp(26px, 6vw, 34px); }
+}
 
 /* =========================
    CONTENIDO
@@ -560,8 +619,10 @@ button { font-family: inherit; }
 
 /* móviles */
 @media (max-width: 640px) {
-  .hero-pedidos { grid-template-columns: 1fr; height: auto; padding: 18px 12px; gap: 10px; }
+  .hero-pedidos { grid-template-columns: 1fr; min-height: auto; padding: 18px 12px; gap: 10px; }
   .hero-caja { display: none; }
+
+  /* ✅ mantener consistencia en móvil, pero un poco más chico */
   .hero-text h1 { font-size: 26px; }
 
   .pedidos-wrap { padding: 18px 0 22px; }
