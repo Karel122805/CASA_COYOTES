@@ -1,0 +1,267 @@
+:host {
+  display: block;
+  font-family: Helvetica, Arial, sans-serif;
+  background: #d8d8d8;
+}
+
+/* HERO */
+.hero {
+  background:
+    radial-gradient(1100px 420px at 50% 35%, rgba(126, 170, 140, 0.30), transparent 60%),
+    linear-gradient(180deg, #0f241a 0%, #244c35 55%, #0f241a 100%);
+  padding: 56px 16px 58px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.hero h1 {
+  margin: 0;
+  font-weight: 700;
+  font-size: clamp(32px, 3.5vw, 48px);
+  letter-spacing: 0.3px;
+}
+
+.hero p {
+  margin-top: 12px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+/* SECCIÓN CENTRAL */
+.middle {
+  padding: 46px 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 34px;
+}
+
+/* Ornamentos */
+.ornament {
+  width: 260px;
+  max-width: 100%;
+  justify-self: center;
+  opacity: 0.98;
+  filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.18));
+}
+
+/* GRID */
+.cards {
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  perspective: 900px; /* para tilt suave */
+}
+
+/* =========================
+   CARD: Animaciones modernas
+   ========================= */
+
+.card {
+  /* para delays desde HTML */
+  --d: 0ms;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 18px;
+  padding: 18px;
+  min-height: 240px;
+
+  background: linear-gradient(180deg, #2f6b45 0%, #2b5f40 55%, #2a573b 100%);
+  box-shadow: 0 14px 22px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+
+  transform: translateY(12px);
+  opacity: 0;
+
+  /* entrada suave al cargar */
+  animation: cardIn 520ms ease forwards;
+  animation-delay: var(--d);
+
+  /* suavidad */
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease,
+    filter 220ms ease;
+}
+
+/* borde “glow” con gradiente (se enciende en hover) */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: 20px;
+  background: conic-gradient(
+    from 180deg,
+    rgba(201, 168, 91, 0.0),
+    rgba(201, 168, 91, 0.45),
+    rgba(120, 190, 150, 0.25),
+    rgba(201, 168, 91, 0.0)
+  );
+  opacity: 0;
+  filter: blur(10px);
+  z-index: -2;
+  transition: opacity 220ms ease;
+}
+
+/* shine (reflejo) */
+.card::after {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 140%;
+  height: 140%;
+  background: linear-gradient(
+    110deg,
+    rgba(255, 255, 255, 0.00) 35%,
+    rgba(255, 255, 255, 0.14) 45%,
+    rgba(255, 255, 255, 0.00) 55%
+  );
+  transform: rotate(12deg) translateX(-30%);
+  opacity: 0;
+  z-index: 0;
+}
+
+/* hover: lift + glow + tilt sutil */
+.card:hover {
+  transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.22);
+  border-color: rgba(201, 168, 91, 0.35);
+  filter: saturate(1.04);
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* shine animado al pasar el mouse */
+.card:hover::after {
+  opacity: 1;
+  animation: shine 820ms ease;
+}
+
+/* focus accesible (teclado) */
+.card:focus-visible {
+  outline: 3px solid rgba(201, 168, 91, 0.8);
+  outline-offset: 4px;
+}
+
+/* Pastilla */
+.pill {
+  position: relative;
+  z-index: 1;
+
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #c9a85b;
+  color: #1a1a1a;
+  font-weight: 700;
+  font-size: 12px;
+  transform-origin: left center;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+/* micro interacción pill */
+.card:hover .pill {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 10px 16px rgba(0,0,0,0.18);
+}
+
+/* Título y texto */
+.title {
+  position: relative;
+  z-index: 1;
+
+  margin: 14px 0 10px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1.25;
+  white-space: pre-line;
+}
+
+.text {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+  white-space: pre-line;
+}
+
+/* Flechita decorativa */
+.arrow {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  font-weight: 700;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 220ms ease, transform 220ms ease;
+  z-index: 1;
+}
+
+.card:hover .arrow {
+  opacity: 0.9;
+  transform: translateX(0);
+}
+
+/* Animaciones */
+@keyframes cardIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shine {
+  0% {
+    transform: rotate(12deg) translateX(-40%);
+  }
+  100% {
+    transform: rotate(12deg) translateX(40%);
+  }
+}
+
+/* Reduce motion (accesibilidad) */
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .card::after {
+    animation: none;
+  }
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .middle {
+    grid-template-columns: 1fr;
+  }
+
+  .ornament {
+    display: none;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}
