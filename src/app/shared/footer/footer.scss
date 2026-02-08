@@ -1,0 +1,177 @@
+@keyframes ccFadeIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
+.cc-anim-in { animation: ccFadeIn .6s cubic-bezier(.2,.9,.2,1) both; }
+.footer-delay { animation-delay: .18s; }
+
+/* =========================
+   FOOTER
+========================= */
+.cc-footer {
+  background: #2b5a3f;
+  color: rgba(255,255,255,0.92);
+  border-top: 2px solid rgba(0,0,0,0.25);
+  margin: 28px 0 0;
+  display: block;
+  box-shadow: 0 -18px 40px rgba(0,0,0,0.12);
+}
+
+.cc-footer__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 18px 18px 20px;
+
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: 24px;
+  align-items: start;
+
+  font-size: 12px;
+}
+
+.cc-col__title {
+  font-weight: 900;
+  margin-bottom: 10px;
+  opacity: 0.95;
+}
+
+.cc-col__text {
+  margin: 6px 0;
+  opacity: 0.9;
+  line-height: 1.35;
+}
+
+/* Social */
+$cc-icon-size: 30px;
+$cc-icon-font: 20px;
+$cc-gap: 10px;
+
+.cc-social {
+  margin-top: 10px;
+  display: flex;
+  gap: $cc-gap;
+  align-items: center;
+}
+
+.cc-social-icon {
+  width: $cc-icon-size;
+  height: $cc-icon-size;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  text-decoration: none;
+
+  i { font-size: $cc-icon-font; line-height: 1; transform: translateY(1px); }
+
+  box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
+  transform: translateZ(0);
+  will-change: transform, box-shadow, filter;
+
+  animation:
+    ccSocialIn .55s cubic-bezier(.2,.9,.2,1) both,
+    ccSocialFloat 3s ease-in-out .55s infinite;
+
+  transition:
+    transform .25s cubic-bezier(.2,.9,.2,1),
+    box-shadow .25s ease,
+    filter .25s ease;
+
+  &:hover {
+    transform: scale(1.25);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .35);
+    filter: brightness(1.05) saturate(1.1);
+    animation: ccSocialPulse .6s ease-out infinite alternate;
+  }
+
+  &:active { transform: scale(1.15); }
+
+  &.ig {
+    background: radial-gradient(circle at 30% 30%,
+      #feda75 0%,
+      #fa7e1e 24%,
+      #d62976 52%,
+      #962fbf 76%,
+      #4f5bd5 100%
+    );
+  }
+
+  &.fb { background: #1877f2; }
+}
+
+@keyframes ccSocialIn {
+  0% { transform: scale(.7); opacity: 0; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes ccSocialFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes ccSocialPulse {
+  from { transform: scale(1.2); }
+  to { transform: scale(1.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cc-social-icon { animation: none !important; transition: none !important; }
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+/* ✅ pantallas medianas (laptop/tabla grande): más aire y 2 columnas si se aprieta */
+@media (max-width: 1024px) {
+  .cc-footer__inner {
+    padding: 18px 14px 20px;
+    gap: 18px;
+  }
+}
+
+/* ✅ tablets: 2 columnas (se ve mejor que brincar directo a 1) */
+@media (max-width: 900px) {
+  .cc-footer__inner {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    font-size: 12px;
+  }
+
+  /* Que "Visítanos" baje completo en la segunda fila */
+  .cc-col:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ✅ móviles: 1 columna, centrado y cómodo */
+@media (max-width: 640px) {
+  .cc-footer {
+    margin-top: 18px;
+  }
+
+  .cc-footer__inner {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 16px 12px 18px;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .cc-col__title {
+    margin-bottom: 8px;
+  }
+
+  .cc-social {
+    justify-content: center;
+  }
+
+  .cc-col__text {
+    margin: 5px 0;
+  }
+}
+
+/* ✅ muy pequeño */
+@media (max-width: 380px) {
+  .cc-footer__inner {
+    padding: 14px 10px 16px;
+    font-size: 11.5px;
+  }
+}

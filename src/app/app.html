@@ -1,10 +1,7 @@
-<nav style="display:flex; gap:12px; padding:12px; border-bottom:1px solid #ddd;">
-  <a routerLink="/inicio">Inicio</a>
-  <a routerLink="/destilados">Destilados</a>
-  <a routerLink="/maguey">Maguey</a>
-  <a routerLink="/servicios">Servicios</a>
-  <a routerLink="/nosotros">Nosotros</a>
-  <a routerLink="/pedidos">Pedidos</a>
-</nav>
+<cc-header></cc-header>
 
-<router-outlet></router-outlet>
+<main class="cc-shell">
+  <router-outlet></router-outlet>
+</main>
+
+<cc-footer></cc-footer>

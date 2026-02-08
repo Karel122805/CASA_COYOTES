@@ -1,1 +1,301 @@
-<p>pedidos works!</p>
+<section class="hero-pedidos cc-anim-in hero-delay">
+  <img class="hero-caja left" src="assets/caja.jpg" alt="Caja" />
+  <div class="hero-text">
+    <h1>Formulario de pedidos</h1>
+    <p>Envíos a toda la República Mexicana.</p>
+  </div>
+  <img class="hero-caja right" src="assets/caja.jpg" alt="Caja" />
+</section>
+
+<div class="pedidos-wrap" [formGroup]="form">
+  <div class="pedidos-card cc-anim-up card-delay">
+
+    <div class="section-title cc-anim-up sec-delay-1">
+      <h2>1. Producto</h2>
+    </div>
+
+    <div class="box box-products cc-anim-up sec-delay-1">
+      <button type="button" class="btn-add" (click)="addItem()">+ Agregar producto</button>
+
+      <div class="items" formArrayName="items">
+        <div class="item cc-anim-up item-pop"
+             *ngFor="let fg of items.controls; let i = index"
+             [formGroupName]="i">
+
+          <div class="item-top">
+            <div class="item-name">Producto #{{ i + 1 }}</div>
+
+            <button type="button"
+                    class="btn-remove"
+                    (click)="removeItem(i)"
+                    [disabled]="items.length === 1">
+              Quitar
+            </button>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <label>Categoría</label>
+              <select formControlName="categoria" (change)="onCategoriaChange(i)">
+                <option value="">-- Selecciona ---</option>
+                <option *ngFor="let c of categorias" [value]="c">{{ c }}</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Producto</label>
+              <select formControlName="productoId" (change)="onProductoChange(i)">
+                <option value="">-- Selecciona ---</option>
+                <option *ngFor="let p of productosPorCategoria(fg.get('categoria')?.value)" [value]="p.id">
+                  {{ p.nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label>Presentación</label>
+              <select formControlName="presentacionId">
+                <option value="">-- Selecciona ---</option>
+                <option *ngFor="let pr of presentacionesPorProducto(fg.get('productoId')?.value)" [value]="pr.id">
+                  {{ pr.nombre }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-qty">
+            <div class="field qty">
+              <label>Cantidad</label>
+              <input type="number" min="1" formControlName="cantidad" />
+            </div>
+          </div>
+
+          <div class="row-bottom">
+            <div class="unit-pill">
+              <span>Unitario:</span>
+              <b>{{ unitario(i) | currency:'MXN':'symbol':'1.0-2' }}</b>
+            </div>
+
+            <div class="unit-note">Cambia la presentación para ver el precio</div>
+
+            <div class="sub-right">
+              <span>Subtotal:</span>
+              <b>{{ subtotalLinea(i) | currency:'MXN':'symbol':'1.0-2' }}</b>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <p class="under-note cc-anim-up sec-delay-2">
+      Puedes mezclar Destilados y Maguey; cada línea calcula su subtotal.
+    </p>
+
+    <div class="section-title mt-2 cc-anim-up sec-delay-2">
+      <h2>2. Datos del cliente</h2>
+    </div>
+
+    <div class="box cc-anim-up sec-delay-2" formGroupName="cliente">
+      <div class="grid-3-client">
+        <div class="field">
+          <label>Nombre</label>
+          <input type="text" formControlName="nombre" />
+        </div>
+
+        <div class="field">
+          <label>Apellidos</label>
+          <input type="text" formControlName="apellidos" />
+        </div>
+
+        <div class="field">
+          <label>WhatsApp (número)</label>
+          <input type="tel" placeholder="Ej. +52 771 344 2906" formControlName="whatsapp" />
+          <div class="hint">Escribe 10 dígitos o con +52.</div>
+        </div>
+      </div>
+
+      <div class="grid-1-left">
+        <div class="field">
+          <label>Correo</label>
+          <input type="email" placeholder="Ej. nombre@dominio.com" formControlName="correo" />
+          <div class="hint">Se acepta cualquier correo válido (gmail, hotmail, etc.).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-title mt-2 cc-anim-up sec-delay-3">
+      <h2>3. Domicilio de entrega</h2>
+    </div>
+
+    <div class="box cc-anim-up sec-delay-3" formGroupName="entrega">
+      <div class="row-actions">
+        <button type="button" class="btn-loc" (click)="usarMiUbicacion()">
+          Usar mi ubicación
+        </button>
+        <small class="hint">Autocompleta CP/estado/municipio/ciudad si el dispositivo lo permite.</small>
+      </div>
+
+      <div class="grid-4-delivery">
+        <div class="field">
+          <label>Calle</label>
+          <input type="text" formControlName="calle" />
+        </div>
+
+        <div class="field">
+          <label>No. exterior</label>
+          <input type="text" formControlName="exterior" />
+        </div>
+
+        <div class="field">
+          <label>No. interior (opcional)</label>
+          <input type="text" formControlName="interior" />
+        </div>
+
+        <div class="field">
+          <label>Colonia / Fracc.</label>
+          <input type="text" formControlName="colonia" />
+        </div>
+      </div>
+
+      <div class="grid-3-delivery">
+        <div class="field cp">
+          <label>Código Postal</label>
+          <input type="text" maxlength="5" placeholder="5 dígitos" formControlName="cp" />
+        </div>
+
+        <div class="field">
+          <label>Estado</label>
+          <select formControlName="estadoId" (change)="onEstadoChange()">
+            <option value="">-- Selecciona ---</option>
+            <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
+          </select>
+          <div class="hint">Elige primero el estado para ver sugerencias</div>
+        </div>
+
+        <div class="field">
+          <label>Municipio</label>
+          <input
+            type="text"
+            formControlName="municipio"
+            placeholder="Escribe para ver sugerencias"
+            list="cc-municipios"
+            (input)="onMunicipioInput()"
+          />
+          <datalist id="cc-municipios">
+            <option *ngFor="let m of municipiosSugeridos" [value]="m"></option>
+          </datalist>
+        </div>
+      </div>
+
+      <div class="grid-1-left">
+        <div class="field">
+          <label>Ciudad / Localidad</label>
+          <input
+            type="text"
+            formControlName="ciudad"
+            placeholder="Escribe para ver sugerencias"
+            list="cc-ciudades"
+            (input)="onCiudadInput()"
+          />
+          <datalist id="cc-ciudades">
+            <option *ngFor="let c of ciudadesSugeridas" [value]="c"></option>
+          </datalist>
+          <div class="hint">Sugerencias filtradas por estado y municipio.</div>
+        </div>
+      </div>
+
+      <div class="field ref">
+        <label>Referencia de entrega (opcional)</label>
+        <textarea rows="4" formControlName="referencia"
+                  placeholder="Entre calles, color de portón, punto de referencia etc."></textarea>
+      </div>
+    </div>
+
+    <div class="section-title mt-2 cc-anim-up sec-delay-4">
+      <h2>4. Resumen</h2>
+    </div>
+
+    <div class="box summary cc-anim-up sec-delay-4">
+      <div class="sum-row">
+        <span>Subtotal de artículos:</span>
+        <span class="val">{{ subtotalArticulos() | currency:'MXN':'symbol':'1.0-2' }}</span>
+      </div>
+
+      <div class="sum-row">
+        <span>Costo de envío (Se informa y confirma por WhatsApp):</span>
+        <span class="val">{{ envioMx === null ? '---' : (envioMx | currency:'MXN':'symbol':'1.0-2') }}</span>
+      </div>
+
+      <div class="sum-row total">
+        <span>Total estimado:</span>
+        <span class="val">{{ totalEstimado() | currency:'MXN':'symbol':'1.0-2' }}</span>
+      </div>
+
+      <!-- ✅ MENSAJE FIJO -->
+      <div class="cc-alert cc-alert--info">
+        <b>Importante:</b> Selecciona al menos 1 producto y completa correctamente tus datos y domicilio.
+        Si falta información, <b>no se enviará</b>. Al confirmar el envío <b>ya no podrás hacer cambios</b>.
+      </div>
+
+      <!-- ✅ MENSAJE DE ERROR (si falta algo) -->
+      <div class="cc-alert cc-alert--error" *ngIf="formError">
+        {{ formError }}
+      </div>
+
+      <!-- ✅ BOTÓN CON VALIDACIÓN + CONFIRMACIÓN + ESTADO -->
+      <button type="button"
+              class="btn-wa"
+              [disabled]="!puedeEnviar() || sendState === 'sending'"
+              (click)="confirmarYEnviarWhatsApp()">
+        Enviar por WhatsApp
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ✅ OVERLAY MODERNO (SCSS) -->
+<div class="cc-send" *ngIf="sendState !== 'idle'">
+  <div class="cc-send__card"
+       [class.is-sending]="sendState === 'sending'"
+       [class.is-ok]="sendState === 'success'"
+       [class.is-err]="sendState === 'error'">
+
+    <div class="cc-send__hero">
+      <!-- Avión de papel (CSS puro) -->
+      <div class="cc-plane-wrap" aria-hidden="true" *ngIf="sendState === 'sending'">
+        <div class="cc-plane">
+          <span class="cc-plane__trail"></span>
+          <span class="cc-plane__body"></span>
+          <span class="cc-plane__wing"></span>
+          <span class="cc-plane__nose"></span>
+        </div>
+      </div>
+
+      <div class="cc-status-icon ok" *ngIf="sendState === 'success'" aria-hidden="true"></div>
+      <div class="cc-status-icon err" *ngIf="sendState === 'error'" aria-hidden="true"></div>
+    </div>
+
+    <div class="cc-send__title" *ngIf="sendState === 'sending'">Preparando WhatsApp…</div>
+    <div class="cc-send__title" *ngIf="sendState === 'success'">¡Listo! WhatsApp se abrió correctamente</div>
+    <div class="cc-send__title" *ngIf="sendState === 'error'">No se pudo abrir WhatsApp</div>
+
+    <div class="cc-send__text" *ngIf="sendState === 'sending'">
+      Estamos armando tu pedido. No cierres esta pantalla.
+    </div>
+
+    <div class="cc-send__text" *ngIf="sendState === 'success'">
+      Revisa el mensaje en WhatsApp y presiona <b>Enviar</b>. Si necesitas cambios, regresa y edítalo antes de mandarlo.
+    </div>
+
+    <div class="cc-send__text" *ngIf="sendState === 'error'">
+      Puede que tu navegador haya bloqueado la ventana (popup) o no tienes WhatsApp disponible.
+      Intenta de nuevo o habilita ventanas emergentes.
+    </div>
+
+    <div class="cc-send__actions" *ngIf="sendState !== 'sending'">
+      <button type="button" class="cc-send__btn" (click)="cerrarEstadoEnvio()">Cerrar</button>
+    </div>
+  </div>
+</div>

@@ -5,7 +5,7 @@ import { Destilados } from './pages/destilados/destilados';
 import { Maguey } from './pages/maguey/maguey';
 import { Servicios } from './pages/servicios/servicios';
 import { Nosotros } from './pages/nosotros/nosotros';
-import { Pedidos } from './pages/pedidos/pedidos';
+import { PedidosComponent } from './pages/pedidos/pedidos';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'inicio', pathMatch: 'full' },
@@ -14,6 +14,6 @@ export const routes: Routes = [
   { path: 'maguey', component: Maguey },
   { path: 'servicios', component: Servicios },
   { path: 'nosotros', component: Nosotros },
-  { path: 'pedidos', component: Pedidos },
+  { path: 'pedidos', component: PedidosComponent },
   { path: '**', redirectTo: 'inicio' },
 ];

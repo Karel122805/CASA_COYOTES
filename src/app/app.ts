@@ -1,9 +1,12 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HeaderComponent } from './shared/header/header'; // ajusta si tu archivo se llama header.ts
+import { FooterComponent } from './shared/footer/footer'; // ajusta si tu archivo se llama footer.ts
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, HeaderComponent, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })

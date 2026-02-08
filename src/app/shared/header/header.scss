@@ -1,0 +1,283 @@
+@keyframes ccFadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ccSheen {
+  0%   { transform: translateX(-140%); opacity: 0; }
+  20%  { opacity: .20; }
+  100% { transform: translateX(220%); opacity: 0; }
+}
+
+.cc-anim-in { animation: ccFadeIn .55s cubic-bezier(.2,.9,.2,1) both; }
+
+* { box-sizing: border-box; }
+a, button { -webkit-tap-highlight-color: transparent; }
+
+/* =========================
+   HEADER (contorno verde en TODO el header)
+========================= */
+.cc-header{
+  /* ✅ colores (tu look) */
+  --cc-bar:    #103020;
+  --cc-pill:   #386838;
+  --cc-hover:  #407040;
+  --cc-active: #285828;
+  --cc-frame:  #50C860;
+  --cc-gold:   #C2A441;
+  --cc-text:   #EEF2EF;
+
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+
+  background: var(--cc-bar);
+  box-shadow: 0 10px 24px rgba(0,0,0,.18);
+
+  /* ✅ contorno verde global (PC y móvil) */
+  border: 2px solid rgba(80,200,96,.55);
+  outline: 1px solid rgba(0,0,0,.18);
+}
+
+/* Inner sin rectángulo extra */
+.cc-header__inner{
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  min-height: 56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+/* Logo */
+.cc-brand{ display:flex; align-items:center; }
+.cc-brand__img{ height: 24px; width:auto; display:block; }
+
+/* =========================
+   NAV desktop
+========================= */
+.cc-nav{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+}
+
+.cc-pill{
+  position: relative;
+  text-decoration: none;
+  color: var(--cc-text);
+  background: var(--cc-pill);
+
+  border: 2px solid transparent;
+  border-radius: 999px;
+
+  padding: 4px 14px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.22), 0 6px 14px rgba(0,0,0,.20);
+  transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, color .14s ease, background .14s ease;
+}
+
+.cc-pill::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:999px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.16), transparent);
+  transform: translateX(-140%);
+  opacity: 0;
+  pointer-events:none;
+}
+
+.cc-pill:hover{
+  background: var(--cc-hover);
+  transform: translateY(-1px);
+  box-shadow: inset 0 -1px 0 rgba(0,0,0,.22), 0 10px 18px rgba(0,0,0,.24);
+}
+.cc-pill:hover::after{
+  opacity: 1;
+  animation: ccSheen 1.05s ease both;
+}
+
+.cc-pill.is-active{
+  background: var(--cc-active);
+  color: var(--cc-gold);
+  border-color: rgba(80,200,96,.85);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.24), 0 10px 18px rgba(0,0,0,.22);
+}
+
+/* =========================
+   Drawer/overlay ocultos por defecto (PC)
+========================= */
+.cc-burger{ display:none; }
+.cc-overlay{ display:none !important; }
+
+/* =========================
+   Tablet: compacta
+========================= */
+@media (max-width: 900px){
+  .cc-header__inner{ padding: 10px 12px; }
+  .cc-nav{ gap: 8px; }
+  .cc-pill{ padding: 4px 12px; }
+}
+
+/* =========================
+   MÓVIL: menú que ACABA donde acaban los botones
+   (sin “bloque verde” gigante)
+========================= */
+@media (max-width: 640px){
+  .cc-nav--desktop{ display:none; }
+
+  /* burger */
+  .cc-burger{
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 2px solid rgba(80,200,96,.55);
+    background: rgba(0,0,0,.12);
+    cursor:pointer;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .cc-burger__icon{
+    position: relative;
+    width: 22px;
+    height: 2px;
+    background: rgba(255,255,255,.92);
+    display:block;
+    border-radius: 10px;
+  }
+  .cc-burger__icon::before,
+  .cc-burger__icon::after{
+    content:"";
+    position:absolute;
+    left:0;
+    width: 22px;
+    height: 2px;
+    background: rgba(255,255,255,.92);
+    border-radius:10px;
+    transition: transform .18s ease, top .18s ease;
+  }
+  .cc-burger__icon::before{ top:-7px; }
+  .cc-burger__icon::after{ top: 7px; }
+
+  .cc-burger__icon.open{ background: transparent; }
+  .cc-burger__icon.open::before{ top:0; transform: rotate(45deg); }
+  .cc-burger__icon.open::after{ top:0; transform: rotate(-45deg); }
+
+  /* overlay */
+  .cc-overlay{
+    display:block !important;
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    background: rgba(0,0,0,.45);
+
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
+  .cc-overlay.open{
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ✅ drawer: NO fullscreen, altura según contenido */
+  .cc-drawer{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: auto;
+    max-height: 85vh;          /* si hay muchos botones */
+    overflow: auto;
+
+    background: var(--cc-bar);
+    border: 2px solid rgba(80,200,96,.55);
+    border-top: 0;             /* pega con el header */
+    border-radius: 0 0 16px 16px;
+
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+
+    transform: translateY(-110%);
+    transition: transform .25s cubic-bezier(.2,.9,.2,1);
+
+    padding: 14px 14px 18px;
+  }
+
+  .cc-overlay.open .cc-drawer{
+    transform: translateY(0);
+  }
+
+  /* top del drawer */
+  .cc-drawer__top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 10px;
+
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(80,200,96,.22);
+    margin-bottom: 14px;
+  }
+
+  /* ✅ logo (si tu HTML ya usa <img class="cc-drawer__logo"> ) */
+  .cc-drawer__logo{
+    height: 26px;
+    width: auto;
+    display:block;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
+  }
+
+  .cc-drawer__close{
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 2px solid rgba(80,200,96,.55);
+    background: rgba(0,0,0,.12);
+    color: rgba(255,255,255,.92);
+    font-size: 18px;
+    cursor:pointer;
+  }
+
+  /* links */
+  .cc-drawer__nav{
+    display:flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .cc-drawer__link{
+    text-decoration:none;
+    color: var(--cc-text);
+
+    background: rgba(56,104,56,.85);
+    border: 2px solid rgba(80,200,96,.30);
+    border-radius: 14px;
+
+    padding: 14px 14px;
+    font-weight: 900;
+    font-size: 16px;
+  }
+
+  .cc-drawer__link.is-active{
+    background: var(--cc-active);
+    color: var(--cc-gold);
+    border-color: rgba(80,200,96,.85);
+    box-shadow: 0 0 0 3px rgba(80,200,96,.12);
+  }
+
+  .cc-header__inner{
+    padding: 10px 10px;
+  }
+  .cc-brand__img{ height: 22px; }
+}
