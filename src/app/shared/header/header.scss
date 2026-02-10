@@ -27,9 +27,16 @@ a, button { -webkit-tap-highlight-color: transparent; }
   --cc-gold:   #C2A441;
   --cc-text:   #EEF2EF;
 
-  position: sticky;
+  /* ✅ para hide/show con scroll */
+  position: fixed;   /* antes: sticky */
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 9999;
+
+  transform: translateY(0);
+  transition: transform .22s ease;
+  will-change: transform;
 
   background: var(--cc-bar);
   box-shadow: 0 10px 24px rgba(0,0,0,.18);
@@ -37,6 +44,19 @@ a, button { -webkit-tap-highlight-color: transparent; }
   /* ✅ contorno verde global (PC y móvil) */
   border: 2px solid rgba(80,200,96,.55);
   outline: 1px solid rgba(0,0,0,.18);
+}
+
+.cc-header.is-hidden{
+  transform: translateY(-110%);
+}
+
+/* ✅ reserva espacio para que NO tape contenido
+   (tu TS actualiza --cc-header-h dinámicamente) */
+:root{
+  --cc-header-h: 76px; /* fallback */
+}
+body{
+  padding-top: var(--cc-header-h);
 }
 
 /* Inner sin rectángulo extra */
@@ -198,12 +218,12 @@ a, button { -webkit-tap-highlight-color: transparent; }
     right: 0;
 
     height: auto;
-    max-height: 85vh;          /* si hay muchos botones */
+    max-height: 85vh;
     overflow: auto;
 
     background: var(--cc-bar);
     border: 2px solid rgba(80,200,96,.55);
-    border-top: 0;             /* pega con el header */
+    border-top: 0;
     border-radius: 0 0 16px 16px;
 
     box-shadow: 0 18px 40px rgba(0,0,0,.35);
@@ -230,7 +250,6 @@ a, button { -webkit-tap-highlight-color: transparent; }
     margin-bottom: 14px;
   }
 
-  /* ✅ logo (si tu HTML ya usa <img class="cc-drawer__logo"> ) */
   .cc-drawer__logo{
     height: 26px;
     width: auto;

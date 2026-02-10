@@ -1,37 +1,130 @@
-<header class="cc-header cc-anim-in">
+<header class="cc-header cc-anim-in" [class.is-hidden]="isHeaderHidden">
   <div class="cc-header__inner">
-    <a routerLink="/inicio" class="cc-brand" aria-label="Casa Coyotes - Inicio" (click)="closeMenu()">
-      <img src="assets/cc-logo.png" alt="CASA COYOTES" class="cc-brand__img">
+    <a
+      routerLink="/inicio"
+      class="cc-brand"
+      aria-label="Casa Coyotes - Inicio"
+      (click)="closeMenu()"
+    >
+      <img
+        src="assets/cc-logo.png"
+        alt="CASA COYOTES"
+        class="cc-brand__img"
+      >
     </a>
 
     <nav class="cc-nav cc-nav--desktop">
-      <a routerLink="/inicio" class="cc-pill" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact:true }">Inicio</a>
-      <a routerLink="/destilados" class="cc-pill" routerLinkActive="is-active">Destilados</a>
-      <a routerLink="/maguey" class="cc-pill" routerLinkActive="is-active">Maguey</a>
-      <a routerLink="/servicios" class="cc-pill" routerLinkActive="is-active">Servicios</a>
-      <a routerLink="/nosotros" class="cc-pill" routerLinkActive="is-active">Nosotros</a>
-      <a routerLink="/pedidos" class="cc-pill" routerLinkActive="is-active">Pedidos</a>
+      <a
+        routerLink="/inicio"
+        class="cc-pill"
+        routerLinkActive="is-active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Inicio
+      </a>
+      <a routerLink="/destilados" class="cc-pill" routerLinkActive="is-active">
+        Destilados
+      </a>
+      <a routerLink="/maguey" class="cc-pill" routerLinkActive="is-active">
+        Maguey
+      </a>
+      <a routerLink="/servicios" class="cc-pill" routerLinkActive="is-active">
+        Servicios
+      </a>
+      <a routerLink="/nosotros" class="cc-pill" routerLinkActive="is-active">
+        Nosotros
+      </a>
+      <a routerLink="/pedidos" class="cc-pill" routerLinkActive="is-active">
+        Pedidos
+      </a>
     </nav>
 
-    <button type="button" class="cc-burger" (click)="toggleMenu()" [attr.aria-expanded]="menuOpen()">
-      <span class="cc-burger__icon" [class.open]="menuOpen()"></span>
+    <button
+      type="button"
+      class="cc-burger"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-label="Abrir menú"
+    >
+      <span
+        class="cc-burger__icon"
+        [class.open]="menuOpen()"
+      ></span>
     </button>
   </div>
 
-  <div class="cc-overlay" [class.open]="menuOpen()" (click)="closeMenu()">
+  <div
+    class="cc-overlay"
+    [class.open]="menuOpen()"
+    (click)="closeMenu()"
+  >
     <div class="cc-drawer" (click)="$event.stopPropagation()">
       <div class="cc-drawer__top">
-<img class="cc-drawer__logo" src="assets/cc-logo.png" alt="CASA COYOTES">
-        <button type="button" class="cc-drawer__close" (click)="closeMenu()">✕</button>
+        <img
+          class="cc-drawer__logo"
+          src="assets/cc-logo.png"
+          alt="CASA COYOTES"
+        >
+        <button
+          type="button"
+          class="cc-drawer__close"
+          (click)="closeMenu()"
+          aria-label="Cerrar menú"
+        >
+          ✕
+        </button>
       </div>
 
       <nav class="cc-drawer__nav">
-        <a routerLink="/inicio" class="cc-drawer__link" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact:true }" (click)="onNavClick()">Inicio</a>
-        <a routerLink="/destilados" class="cc-drawer__link" routerLinkActive="is-active" (click)="onNavClick()">Destilados</a>
-        <a routerLink="/maguey" class="cc-drawer__link" routerLinkActive="is-active" (click)="onNavClick()">Maguey</a>
-        <a routerLink="/servicios" class="cc-drawer__link" routerLinkActive="is-active" (click)="onNavClick()">Servicios</a>
-        <a routerLink="/nosotros" class="cc-drawer__link" routerLinkActive="is-active" (click)="onNavClick()">Nosotros</a>
-        <a routerLink="/pedidos" class="cc-drawer__link" routerLinkActive="is-active" (click)="onNavClick()">Pedidos</a>
+        <a
+          routerLink="/inicio"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="onNavClick()"
+        >
+          Inicio
+        </a>
+        <a
+          routerLink="/destilados"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          (click)="onNavClick()"
+        >
+          Destilados
+        </a>
+        <a
+          routerLink="/maguey"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          (click)="onNavClick()"
+        >
+          Maguey
+        </a>
+        <a
+          routerLink="/servicios"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          (click)="onNavClick()"
+        >
+          Servicios
+        </a>
+        <a
+          routerLink="/nosotros"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          (click)="onNavClick()"
+        >
+          Nosotros
+        </a>
+        <a
+          routerLink="/pedidos"
+          class="cc-drawer__link"
+          routerLinkActive="is-active"
+          (click)="onNavClick()"
+        >
+          Pedidos
+        </a>
       </nav>
     </div>
   </div>
