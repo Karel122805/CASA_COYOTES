@@ -18,26 +18,27 @@
 
   <!-- BOTONES SUPERIORES: iconos 2-5 -->
   <nav class="cm-tabs">
-    <a class="cm-tab" href="#semilla">
+    <a class="cm-tab" (click)="scrollTo('semilla')">
       <div class="cm-tab__pill">SEMILLA</div>
       <img class="cm-tab__icon" src="assets/2.png" alt="Semilla">
     </a>
 
-    <a class="cm-tab" href="#maguey-semilla">
+    <a class="cm-tab" (click)="scrollTo('maguey-semilla')">
       <div class="cm-tab__pill">MAGUEY DE SEMILLA</div>
       <img class="cm-tab__icon" src="assets/3.png" alt="Maguey de semilla">
     </a>
 
-    <a class="cm-tab" href="#maguey-hijuelos">
+    <a class="cm-tab" (click)="scrollTo('maguey-hijuelos')">
       <div class="cm-tab__pill">MAGUEY DE HIJUELOS</div>
       <img class="cm-tab__icon" src="assets/4.png" alt="Maguey de hijuelos">
     </a>
 
-    <a class="cm-tab" href="#pina-maguey">
+    <a class="cm-tab" (click)="scrollTo('pina-maguey')">
       <div class="cm-tab__pill">PIÑA DE MAGUEY</div>
       <img class="cm-tab__icon" src="assets/5.png" alt="Piña de maguey">
     </a>
   </nav>
+
 
   <!-- ================== SEMILLA ================== -->
   <section id="semilla" class="cm-block">

@@ -1,11 +1,23 @@
 /* ======================================================
-   MAGUEY - CSS COMPLETO (SIN SCALE)
+   MAGUEY - CSS COMPLETO (SIN SCALE) - CORREGIDO
+   FIX:
+   - Líneas uniformes (sin doble borde)
+   - En móvil líneas consistentes
+   - Imagen Piña no se sale en móvil
+   - Tabs grandes sin encimado
 ====================================================== */
 :host{
   display:block;
   font-family: Helvetica, Arial, sans-serif;
   background:#d9d9d9;
 }
+
+/* ✅ Scroll suave global (desde el componente) */
+:host ::ng-deep html,
+:host ::ng-deep body{
+  scroll-behavior: smooth;
+}
+
 
 /* ======================================================
    CONTENEDOR GENERAL + VARIABLES
@@ -21,6 +33,7 @@
   --cm-cream:#efe6c8;        /* franja crema */
   --cm-white:#ffffff;
 
+  --cm-line: 2px;            /* ✅ UNA sola medida para TODAS las líneas */
   --side: clamp(16px, 4vw, 72px);
 
   transform: none !important;
@@ -47,7 +60,7 @@
 .cm-hero__left{
   flex:1;
   padding:18px var(--side);
-  height: 231px;
+  height:231px;
 }
 
 .cm-hero__kicker{
@@ -82,7 +95,7 @@
 }
 
 /* ======================================================
-   TABS ✅ MÁS GRANDES + SIN ENCIMADO TEXTO/IMAGEN
+   TABS ✅ GRANDES + SIN ENCIMADO
 ====================================================== */
 .cm-tabs{
   width:100%;
@@ -94,10 +107,9 @@
 
 .cm-tab{
   background: var(--cm-olive);
-  border: 2px solid var(--cm-dark);
+  border: var(--cm-line) solid var(--cm-dark);
   border-radius:16px;
 
-  /* ✅ más grande como tu imagen */
   height:300px;
 
   position:relative;
@@ -105,15 +117,13 @@
   align-items:center;
   justify-content:center;
 
-  /* ✅ reserva espacio para el pill */
-  padding-top:62px;
+  padding-top:62px;  /* reserva para pill */
   overflow:hidden;
 }
 
 .cm-tab__pill{
   position:absolute;
   top:14px;
-
   left:50%;
   transform:translateX(-50%);
 
@@ -132,15 +142,11 @@
   text-overflow:ellipsis;
 }
 
-/* ✅ icono más grande, sin invadir el texto */
 .cm-tab__icon{
   width:250px;
   height:250px;
-
-  /* clave: controla el alto real dentro del tab */
   max-width:270px;
   max-height:220px;
-
   object-fit:contain;
   margin:0;
 }
@@ -155,7 +161,7 @@
 
 .cm-block__title{
   background: var(--cm-cream);
-  border: 2px solid var(--cm-dark);
+  border: var(--cm-line) solid var(--cm-dark);
   border-bottom: 0;
   font-weight:700;
   font-size:22px;
@@ -164,12 +170,13 @@
 }
 
 /* ======================================================
-   GRID (LÍNEAS CONTINUAS)
+   GRID (TABLA REAL: líneas uniformes)
+   ✅ Solo borde exterior aquí
 ====================================================== */
 .cm-grid{
   width:100%;
   background: var(--cm-white);
-  border: 2px solid var(--cm-dark);
+  border: var(--cm-line) solid var(--cm-dark);
   display:grid;
   gap:0;
   padding:0;
@@ -198,21 +205,50 @@
   padding:14px clamp(12px, 1.6vw, 44px);
   min-height:160px;
   align-items:start;
+
+  /* ✅ evita “salidas” en móvil cuando algo se desborda */
+  overflow:hidden;
 }
 
 /* ======================================================
-   LÍNEAS (2 COLUMNAS) - ROBUSTO
+   LÍNEAS UNIFORMES (SIN DOBLE BORDE)
+   Estrategia:
+   - En vez de border-bottom/right (que se suma con el borde exterior),
+     usamos SOLO border-top y border-left internos.
 ====================================================== */
+
+/* Reset */
+.cm-grid .cm-card{
+  border:0;
+}
+
+/* ---- GRID 2 columnas ---- */
+/* Línea horizontal: arriba de cada card excepto la primera fila */
 .cm-grid--2 .cm-card{
-  border-bottom: 2px solid var(--cm-dark);
+  border-top: var(--cm-line) solid var(--cm-dark);
+}
+/* Quitar línea superior en la primera fila (1 y 2) */
+.cm-grid--2 .cm-card:nth-child(-n + 2){
+  border-top: 0;
 }
 
-.cm-grid--2 .cm-card:nth-child(odd):not(.cm-card--center){
-  border-right: 2px solid var(--cm-dark);
+/* Línea vertical del centro: a la columna derecha (cards pares) */
+.cm-grid--2 .cm-card:nth-child(even){
+  border-left: var(--cm-line) solid var(--cm-dark);
 }
 
-.cm-grid--2 .cm-card:last-child{
-  border-bottom: 0;
+/* PENCA: ocupa 2 columnas, NO lleva línea vertical, pero sí línea arriba completa */
+.cm-card--center{
+  grid-column: 1 / -1;
+  border-left: 0 !important; /* ✅ nunca línea vertical */
+}
+
+/* ---- GRID 1 columna ---- */
+.cm-grid--1 .cm-card{
+  border-top: var(--cm-line) solid var(--cm-dark);
+}
+.cm-grid--1 .cm-card:first-child{
+  border-top: 0;
 }
 
 /* ======================================================
@@ -220,16 +256,8 @@
 ====================================================== */
 .cm-row-separator{
   grid-column: 1 / -1;
-  height: 2px;
+  height: var(--cm-line);
   background: var(--cm-dark);
-}
-
-/* 1 columna */
-.cm-grid--1 .cm-card{
-  border-bottom: 2px solid var(--cm-dark);
-}
-.cm-grid--1 .cm-card:last-child{
-  border-bottom: 0;
 }
 
 /* áreas */
@@ -266,7 +294,7 @@
 
 .cm-card__unit{
   width:fit-content;
-  border:2px solid var(--cm-olive-soft);
+  border: var(--cm-line) solid var(--cm-olive-soft);
   border-radius:999px;
   padding:4px 12px;
   font-weight:700;
@@ -298,7 +326,7 @@
   height:140px;
   border-radius:14px;
   overflow:hidden;
-  border:2px solid var(--cm-dark);
+  border: var(--cm-line) solid var(--cm-dark);
   background:#f4f4f4;
   align-self:center;
   justify-self:start;
@@ -316,11 +344,8 @@
   justify-content:center;
 }
 
-/* PENCA */
+/* PENCA (layout interno igual) */
 .cm-card--center{
-  grid-column: 1 / -1;
-  border-right: 0 !important;
-
   grid-template-columns: 64px 520px 230px !important;
   grid-template-areas:
     "num price img"
@@ -328,8 +353,6 @@
 
   justify-content:center !important;
   padding:14px clamp(12px, 1.6vw, 44px) !important;
-
-  border-bottom: 0 !important;
 }
 
 /* ======================================================
@@ -349,10 +372,9 @@
     grid-template-columns: 64px minmax(360px, 1fr) 220px;
   }
 
-  /* Tabs un poco más compactos en pantallas medianas */
-  .cm-tabs{ gap:18px; }
-  .cm-tab{ height:185px; padding-top:58px; }
-  .cm-tab__icon{ max-height:110px; }
+  /* Tabs siguen grandes (no los bajamos a 185 porque los quieres grandes) */
+  .cm-tab{ height:260px; padding-top:60px; }
+  .cm-tab__icon{ max-height:200px; }
 }
 
 @media (max-width: 980px){
@@ -360,14 +382,20 @@
   .cm-hero__right{ width:100%; height:180px; min-width:unset; }
 
   .cm-tabs{ grid-template-columns: repeat(2, 1fr); }
-  .cm-tab{ height:180px; padding-top:56px; }
-  .cm-tab__icon{ max-height:105px; }
+  .cm-tab{ height:220px; padding-top:56px; }
+  .cm-tab__icon{ max-height:160px; }
 
+  /* En móvil, el grid 2 columnas pasa a 1, y las líneas siguen uniformes */
   .cm-grid--2{ grid-template-columns: 1fr; }
-  .cm-grid--2 .cm-card:nth-child(odd){ border-right: 0; }
 
-  .cm-grid--2 .cm-card{ border-bottom: 2px solid var(--cm-dark); }
-  .cm-grid--2 .cm-card:last-child{ border-bottom: 0; }
+  /* Al ser 1 columna: quitamos la línea vertical (border-left) */
+  .cm-grid--2 .cm-card{
+    border-left: 0 !important;
+    border-top: var(--cm-line) solid var(--cm-dark);
+  }
+  .cm-grid--2 .cm-card:first-child{
+    border-top: 0;
+  }
 
   .cm-card{
     grid-template-columns: 60px 1fr;
@@ -380,10 +408,12 @@
     padding:14px 12px;
   }
 
+  /* ✅ FIX: Piña / cualquier imagen no se sale en móvil */
   .cm-card__img{
     width:100%;
+    max-width:100%;
     height:220px;
-    justify-self:start;
+    justify-self:stretch;
     margin-top:10px;
   }
 
@@ -394,5 +424,31 @@
       "num body"
       "img img" !important;
     justify-content:stretch !important;
+  }
+}
+
+@media (max-width: 980px){
+
+  /* ... lo que ya tienes ... */
+
+  /* ✅ FIX ESPECÍFICO: PIÑA (grid--1) también debe volverse móvil */
+  .cm-grid--1 .cm-card{
+    grid-template-columns: 60px 1fr !important;
+    grid-template-areas:
+      "num price"
+      "num body"
+      "img img" !important;
+    justify-content:stretch !important;
+    min-height:auto;
+    padding:14px 12px;
+  }
+
+  /* ✅ y su imagen jamás debe salirse */
+  .cm-grid--1 .cm-card .cm-card__img{
+    width:100% !important;
+    max-width:100% !important;
+    height:220px;
+    justify-self:stretch !important;
+    margin-top:10px;
   }
 }

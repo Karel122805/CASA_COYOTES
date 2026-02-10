@@ -5,4 +5,15 @@ import { Component } from '@angular/core';
   templateUrl: './maguey.html',
   styleUrls: ['./maguey.scss']
 })
-export class Maguey {}
+export class Maguey {
+
+  scrollTo(sectionId: string): void {
+    const el = document.getElementById(sectionId);
+    if (!el) return;
+
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+}
