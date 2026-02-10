@@ -2,10 +2,17 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-servicios',
-  imports: [],
   templateUrl: './servicios.html',
-  styleUrl: './servicios.scss',
+  styleUrls: ['./servicios.scss']
 })
 export class Servicios {
+  scrollTo(id: string): void {
+    const el = document.getElementById(id);
+    if (!el) return;
 
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
 }

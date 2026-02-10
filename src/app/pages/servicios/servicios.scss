@@ -1,0 +1,358 @@
+/* ======================================================
+   SERVICIOS - CSS COMPLETO (1 SOLO RECUADRO COMO IMAGEN)
+====================================================== */
+
+:host{
+  display:block;
+  font-family: Helvetica, Arial, sans-serif;
+  background:#d9d9d9;
+  overflow-x: clip;
+}
+
+@supports not (overflow: clip){
+  :host{ overflow-x: hidden; }
+}
+
+/* scroll suave (si tu scroll lo hace el navegador) */
+:host ::ng-deep html,
+:host ::ng-deep body{
+  scroll-behavior: smooth;
+}
+
+/* ======================================================
+   CONTENEDOR + VARIABLES
+====================================================== */
+.catalogo-servicios{
+  width:100%;
+  background:#d9d9d9;
+  color:#111;
+
+  --cs-dark: #1e4b2f;
+  --cs-olive: #6f8450;
+  --cs-olive-soft:#7a864e;
+  --cs-cream:#efe6c8;
+  --cs-white:#ffffff;
+
+  --cs-line: 2px;
+  --side: clamp(16px, 4vw, 72px);
+}
+
+/* protección */
+.catalogo-servicios *{ box-sizing:border-box; }
+.catalogo-servicios img{ display:block; max-width:100%; height:auto; }
+.catalogo-servicios a{ text-decoration:none; color:inherit; }
+
+/* ======================================================
+   HERO
+====================================================== */
+.cs-hero{
+  width:100%;
+  display:flex;
+  align-items:stretch;
+  background: linear-gradient(0deg, #0f2b1b, #15412a);
+  color:#fff;
+  min-height:150px;
+}
+
+.cs-hero__left{
+  flex:1;
+  padding:18px var(--side);
+  height:231px;
+}
+
+.cs-hero__kicker{
+  font-weight:700;
+  letter-spacing:.3px;
+  font-size:14px;
+  opacity:.95;
+}
+
+.cs-hero__title{
+  font-weight:700;
+  font-size:26px;
+  margin-top:6px;
+}
+
+.cs-hero__sub{
+  font-size:12px;
+  margin-top:6px;
+  opacity:.9;
+}
+
+.cs-hero__right{
+  width:45%;
+  min-width:320px;
+  overflow:hidden;
+}
+
+.cs-hero__right img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ======================================================
+   ✅ TABS: SOLO 1 RECUADRO (como tu imagen)
+====================================================== */
+.cs-tabs{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:28px var(--side) 22px;
+}
+
+.cs-tab{
+  background: var(--cs-olive);
+  border: var(--cs-line) solid var(--cs-dark);
+  border-radius:16px;
+
+  width: min(560px, 100%);
+  height: 320px;
+
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  padding-top:70px; /* espacio para pill */
+  overflow:hidden;
+}
+
+/* pill */
+.cs-tab__pill{
+  position:absolute;
+  top:18px;
+  left:50%;
+  transform:translateX(-50%);
+
+  background: var(--cs-dark);
+  color:#fff;
+  padding:10px 28px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+/* ✅ iconos dentro del recuadro */
+.cs-tab__icons{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:24px;
+  padding:0 18px;
+}
+
+.cs-tab__icons img{
+  width:702px;
+  height:auto;
+  object-fit:contain;
+}
+
+/* ======================================================
+   BLOQUES / TÍTULO
+====================================================== */
+.cs-block{
+  width:100%;
+  padding: 0 var(--side) 22px;
+  scroll-margin-top: 20px;
+}
+
+.cs-block__title{
+  background: var(--cs-cream);
+  border: var(--cs-line) solid var(--cs-dark);
+  border-bottom: 0;
+  font-weight:700;
+  font-size:22px;
+  text-align:center;
+  padding:8px 10px;
+}
+
+/* ======================================================
+   GRID TABLA
+====================================================== */
+.cs-grid{
+  width:100%;
+  background: var(--cs-white);
+  border: var(--cs-line) solid var(--cs-dark);
+  display:grid;
+  gap:0;
+  padding:0;
+}
+
+.cs-grid--2{ grid-template-columns: repeat(2, 1fr); }
+
+/* ======================================================
+   CARD
+====================================================== */
+.cs-card{
+  width:100%;
+  display:grid;
+
+  grid-template-columns: 64px 1fr 230px;
+  grid-template-areas:
+    "num  price img"
+    "num  body  img";
+
+  column-gap:18px;
+  row-gap:8px;
+
+  padding:18px clamp(12px, 1.8vw, 44px);
+  min-height:260px;
+
+  overflow:hidden;
+  border:0;
+}
+
+/* líneas uniformes internas */
+.cs-grid .cs-card{
+  border-top: var(--cs-line) solid var(--cs-dark);
+}
+.cs-grid--2 .cs-card:nth-child(-n + 2){
+  border-top:0;
+}
+.cs-grid--2 .cs-card:nth-child(even){
+  border-left: var(--cs-line) solid var(--cs-dark);
+}
+
+/* card centrada */
+.cs-card--center{
+  grid-column: 1 / -1;
+  border-left: 0 !important;
+
+  grid-template-columns: 64px 520px 230px;
+  justify-content:center;
+}
+
+/* áreas */
+.cs-card__num   { grid-area:num; }
+.cs-card__price { grid-area:price; }
+.cs-card__body  { grid-area:body; }
+.cs-card__img   { grid-area:img; }
+
+/* num */
+.cs-card__num{
+  width:56px;
+  height:56px;
+  background: var(--cs-olive-soft);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+}
+
+/* price */
+.cs-card__price{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  align-items:flex-start;
+}
+.cs-card__amount{
+  font-weight:700;
+  font-size:26px;
+}
+.cs-card__unit{
+  width:fit-content;
+  border: var(--cs-line) solid var(--cs-olive-soft);
+  border-radius:999px;
+  padding:4px 12px;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  background:#fff;
+}
+
+/* text */
+.cs-card__name{
+  font-weight:700;
+  font-size:19px;
+  line-height:1.08;
+  text-transform:uppercase;
+}
+.cs-card__meta{
+  font-size:11px;
+  font-style:italic;
+  opacity:.7;
+  margin-top:10px;
+  max-width:560px;
+}
+
+/* image */
+.cs-card__img{
+  width:220px;
+  height:140px;
+  border-radius:14px;
+  overflow:hidden;
+  border: var(--cs-line) solid var(--cs-dark);
+  background:#f4f4f4;
+  align-self:center;
+  justify-self:end;
+}
+.cs-card__img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+@media (max-width: 980px){
+  .cs-hero{ flex-direction:column; }
+  .cs-hero__right{ width:100%; height:180px; min-width:unset; }
+
+  .cs-tab{
+    width: min(520px, 95%);
+    height: auto;
+    padding: 72px 18px 22px;
+  }
+
+  .cs-tab__icons{
+    flex-wrap:wrap;
+    gap:18px;
+  }
+
+  .cs-tab__icons img{
+    width:394px;
+  }
+
+  .cs-grid--2{ grid-template-columns: 1fr; }
+  .cs-grid--2 .cs-card{
+    border-left: 0 !important;
+  }
+  .cs-grid--2 .cs-card:first-child{
+    border-top:0;
+  }
+
+  .cs-card{
+    grid-template-columns: 60px 1fr;
+    grid-template-areas:
+      "num price"
+      "num body"
+      "img img";
+    min-height:auto;
+    padding:14px 12px;
+  }
+
+  .cs-card__img{
+    width:100%;
+    height:220px;
+    justify-self:stretch;
+    margin-top:10px;
+  }
+
+  .cs-card--center{
+    grid-template-columns: 60px 1fr !important;
+    grid-template-areas:
+      "num price"
+      "num body"
+      "img img" !important;
+    justify-content:stretch;
+  }
+}

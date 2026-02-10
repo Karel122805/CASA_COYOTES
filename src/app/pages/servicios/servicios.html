@@ -1,1 +1,101 @@
-<p>servicios works!</p>
+<section class="catalogo-servicios">
+
+  <!-- HERO SUPERIOR -->
+  <header class="cs-hero">
+    <div class="cs-hero__left">
+      <div class="cs-hero__kicker">CATÁLOGO 2025</div>
+      <div class="cs-hero__title">Servicios agrícolas</div>
+      <div class="cs-hero__sub">
+        Acompañamos tu cultivo de maguey desde el diseño del plantío hasta su mantenimiento.
+      </div>
+    </div>
+
+    <div class="cs-hero__right">
+      <img src="assets/16.png" alt="Servicios agrícolas" />
+    </div>
+  </header>
+
+  <!-- ✅ UN SOLO CUADRO (como tu imagen) -->
+  <nav class="cs-tabs">
+    <a class="cs-tab" href="#servicios" (click)="$event.preventDefault(); scrollTo('servicios')">
+      <div class="cs-tab__pill">MAGUEY DE HIJUELOS</div>
+
+      <div class="cs-tab__icons">
+        <img src="assets/servicios.png" alt="Icono 17">
+      </div>
+    </a>
+  </nav>
+
+  <!-- ================== SERVICIOS ================== -->
+  <section id="servicios" class="cs-block">
+    <div class="cs-block__title">MAGUEY DE HIJUELOS</div>
+
+    <div class="cs-grid cs-grid--2">
+
+      <!-- 1 -->
+      <article id="diseno-plantio" class="cs-card">
+        <div class="cs-card__num">1.</div>
+
+        <div class="cs-card__price">
+          <div class="cs-card__amount">$350.00</div>
+          <div class="cs-card__unit">POR HECTÁREA</div>
+        </div>
+
+        <div class="cs-card__body">
+          <div class="cs-card__name">DISEÑO DEL PLANTÍO</div>
+          <div class="cs-card__meta">
+            EVITAR LA EROSIÓN DEL SUELO Y FOMENTAR LA PRESERVACIÓN DE LA HUMEDAD.
+          </div>
+        </div>
+
+        <div class="cs-card__img">
+          <img src="assets/21.png" alt="Diseño del plantío">
+        </div>
+      </article>
+
+      <!-- 2 -->
+      <article id="establecimiento-vivero" class="cs-card">
+        <div class="cs-card__num">2.</div>
+
+        <div class="cs-card__price">
+          <div class="cs-card__amount">$5.00</div>
+          <div class="cs-card__unit">POR PIEZA</div>
+        </div>
+
+        <div class="cs-card__body">
+          <div class="cs-card__name">ESTABLECIMIENTO DE VIVERO</div>
+          <div class="cs-card__meta">
+            RESCATE, LIMPIEZA Y PLANTACIÓN DE MAGUEY.
+          </div>
+        </div>
+
+        <div class="cs-card__img">
+          <img src="assets/22.png" alt="Establecimiento de vivero">
+        </div>
+      </article>
+
+      <!-- 3 centrada -->
+      <article id="mantenimiento-cultivo" class="cs-card cs-card--center">
+        <div class="cs-card__num">3.</div>
+
+        <div class="cs-card__price">
+          <div class="cs-card__amount">$750.00</div>
+          <div class="cs-card__unit">POR HECTÁREA</div>
+        </div>
+
+        <div class="cs-card__body">
+          <div class="cs-card__name">MANTENIMIENTO DE CULTIVO</div>
+          <div class="cs-card__meta">
+            NUTRICIÓN Y APLICACIÓN DE AGROINSUMOS.
+          </div>
+        </div>
+
+        <div class="cs-card__img">
+          <img src="assets/23.png" alt="Mantenimiento de cultivo">
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+</section>
