@@ -2,10 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-maguey',
-  imports: [],
   templateUrl: './maguey.html',
-  styleUrl: './maguey.scss',
+  styleUrls: ['./maguey.scss']
 })
-export class Maguey {
-
-}
+export class Maguey {}

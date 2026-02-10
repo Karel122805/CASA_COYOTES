@@ -26,20 +26,18 @@
             "inlineStyleLanguage": "scss",
 
             "assets": [
-              {
-                "glob": "*/",
-                "input": "public"
-              },
-              {
-<<<<<<< HEAD
-                "glob": "**/*",
-=======
-                "glob": "*/",
->>>>>>> 04451ee9b8919302ea9f56b77e80768f18730f23
-                "input": "src/assets",
-                "output": "assets"
-              }
-            ],
+  {
+    "glob": "**/*",
+    "input": "public",
+    "output": "."
+  },
+  {
+    "glob": "**/*",
+    "input": "src/assets",
+    "output": "assets"
+  }
+],
+
 
             "styles": [
               "src/styles.scss"

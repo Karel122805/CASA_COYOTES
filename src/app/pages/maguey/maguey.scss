@@ -1,0 +1,398 @@
+/* ======================================================
+   MAGUEY - CSS COMPLETO (SIN SCALE)
+====================================================== */
+:host{
+  display:block;
+  font-family: Helvetica, Arial, sans-serif;
+  background:#d9d9d9;
+}
+
+/* ======================================================
+   CONTENEDOR GENERAL + VARIABLES
+====================================================== */
+.catalogo-maguey{
+  width:100%;
+  background:#d9d9d9;
+  color:#111;
+
+  --cm-dark: #1e4b2f;        /* borde verde */
+  --cm-olive: #6f8450;       /* tabs */
+  --cm-olive-soft:#7a864e;   /* numeritos */
+  --cm-cream:#efe6c8;        /* franja crema */
+  --cm-white:#ffffff;
+
+  --side: clamp(16px, 4vw, 72px);
+
+  transform: none !important;
+  width: 100% !important;
+}
+
+/* protección */
+.catalogo-maguey *{ box-sizing:border-box; }
+.catalogo-maguey img{ display:block; max-width:100%; height:auto; }
+.catalogo-maguey a{ text-decoration:none; color:inherit; }
+
+/* ======================================================
+   HERO (FULL WIDTH)
+====================================================== */
+.cm-hero{
+  width:100%;
+  display:flex;
+  align-items:stretch;
+  background: linear-gradient(0deg, #0f2b1b, #15412a);
+  color:#fff;
+  min-height:150px;
+}
+
+.cm-hero__left{
+  flex:1;
+  padding:18px var(--side);
+  height: 231px;
+}
+
+.cm-hero__kicker{
+  font-weight:700;
+  letter-spacing:.3px;
+  font-size:14px;
+  opacity:.95;
+}
+
+.cm-hero__title{
+  font-weight:700;
+  font-size:26px;
+  margin-top:6px;
+}
+
+.cm-hero__sub{
+  font-size:12px;
+  margin-top:6px;
+  opacity:.9;
+}
+
+.cm-hero__right{
+  width:45%;
+  min-width:320px;
+  overflow:hidden;
+}
+
+.cm-hero__right img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* ======================================================
+   TABS ✅ MÁS GRANDES + SIN ENCIMADO TEXTO/IMAGEN
+====================================================== */
+.cm-tabs{
+  width:100%;
+  display:grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap:22px;
+  padding:22px var(--side) 14px;
+}
+
+.cm-tab{
+  background: var(--cm-olive);
+  border: 2px solid var(--cm-dark);
+  border-radius:16px;
+
+  /* ✅ más grande como tu imagen */
+  height:300px;
+
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  /* ✅ reserva espacio para el pill */
+  padding-top:62px;
+  overflow:hidden;
+}
+
+.cm-tab__pill{
+  position:absolute;
+  top:14px;
+
+  left:50%;
+  transform:translateX(-50%);
+
+  background: var(--cm-dark);
+  color:#fff;
+  padding:8px 22px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+
+  white-space:nowrap;
+  max-width:calc(100% - 28px);
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+/* ✅ icono más grande, sin invadir el texto */
+.cm-tab__icon{
+  width:250px;
+  height:250px;
+
+  /* clave: controla el alto real dentro del tab */
+  max-width:270px;
+  max-height:220px;
+
+  object-fit:contain;
+  margin:0;
+}
+
+/* ======================================================
+   BLOQUES
+====================================================== */
+.cm-block{
+  width:100%;
+  padding: 0 var(--side) 22px;
+}
+
+.cm-block__title{
+  background: var(--cm-cream);
+  border: 2px solid var(--cm-dark);
+  border-bottom: 0;
+  font-weight:700;
+  font-size:22px;
+  text-align:center;
+  padding:8px 10px;
+}
+
+/* ======================================================
+   GRID (LÍNEAS CONTINUAS)
+====================================================== */
+.cm-grid{
+  width:100%;
+  background: var(--cm-white);
+  border: 2px solid var(--cm-dark);
+  display:grid;
+  gap:0;
+  padding:0;
+}
+
+.cm-grid--2{ grid-template-columns: repeat(2, 1fr); }
+.cm-grid--1{ grid-template-columns: 1fr; }
+
+/* ======================================================
+   CARD
+====================================================== */
+.cm-card{
+  width:100%;
+  justify-self:stretch;
+
+  display:grid;
+  grid-template-columns: 64px 460px 230px;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "num  price img"
+    "num  body  img";
+  column-gap:18px;
+  row-gap:6px;
+
+  justify-content:center;
+  padding:14px clamp(12px, 1.6vw, 44px);
+  min-height:160px;
+  align-items:start;
+}
+
+/* ======================================================
+   LÍNEAS (2 COLUMNAS) - ROBUSTO
+====================================================== */
+.cm-grid--2 .cm-card{
+  border-bottom: 2px solid var(--cm-dark);
+}
+
+.cm-grid--2 .cm-card:nth-child(odd):not(.cm-card--center){
+  border-right: 2px solid var(--cm-dark);
+}
+
+.cm-grid--2 .cm-card:last-child{
+  border-bottom: 0;
+}
+
+/* ======================================================
+   Separador opcional si lo usas antes de PENCA
+====================================================== */
+.cm-row-separator{
+  grid-column: 1 / -1;
+  height: 2px;
+  background: var(--cm-dark);
+}
+
+/* 1 columna */
+.cm-grid--1 .cm-card{
+  border-bottom: 2px solid var(--cm-dark);
+}
+.cm-grid--1 .cm-card:last-child{
+  border-bottom: 0;
+}
+
+/* áreas */
+.cm-card__num   { grid-area:num; }
+.cm-card__price { grid-area:price; }
+.cm-card__body  { grid-area:body; }
+.cm-card__img   { grid-area:img; }
+
+/* Número */
+.cm-card__num{
+  width:56px;
+  height:56px;
+  background: var(--cm-olive-soft);
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+}
+
+/* Precio */
+.cm-card__price{
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+  align-items:flex-start;
+}
+
+.cm-card__amount{
+  font-weight:700;
+  font-size:26px;
+}
+
+.cm-card__unit{
+  width:fit-content;
+  border:2px solid var(--cm-olive-soft);
+  border-radius:999px;
+  padding:4px 12px;
+  font-weight:700;
+  font-size:11px;
+  letter-spacing:.3px;
+  text-transform:uppercase;
+  background:#fff;
+}
+
+/* Texto */
+.cm-card__name{
+  font-weight:700;
+  font-size:19px;
+  line-height:1.08;
+  text-transform:uppercase;
+}
+
+.cm-card__meta,
+.cm-card__note{
+  font-size:11px;
+  font-style:italic;
+  opacity:.7;
+  margin-top:4px;
+}
+
+/* Imagen */
+.cm-card__img{
+  width:220px;
+  height:140px;
+  border-radius:14px;
+  overflow:hidden;
+  border:2px solid var(--cm-dark);
+  background:#f4f4f4;
+  align-self:center;
+  justify-self:start;
+}
+
+.cm-card__img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* PIÑA (1 columna) */
+.cm-grid--1 .cm-card{
+  grid-template-columns: 64px 520px 230px;
+  justify-content:center;
+}
+
+/* PENCA */
+.cm-card--center{
+  grid-column: 1 / -1;
+  border-right: 0 !important;
+
+  grid-template-columns: 64px 520px 230px !important;
+  grid-template-areas:
+    "num price img"
+    "num body  img" !important;
+
+  justify-content:center !important;
+  padding:14px clamp(12px, 1.6vw, 44px) !important;
+
+  border-bottom: 0 !important;
+}
+
+/* ======================================================
+   RESPONSIVE
+====================================================== */
+@media (max-width: 1200px){
+  .cm-card{
+    grid-template-columns: 64px minmax(320px, 1fr) 220px;
+    justify-content:stretch;
+  }
+  .cm-card__img{
+    width:200px;
+    height:130px;
+  }
+
+  .cm-grid--1 .cm-card{
+    grid-template-columns: 64px minmax(360px, 1fr) 220px;
+  }
+
+  /* Tabs un poco más compactos en pantallas medianas */
+  .cm-tabs{ gap:18px; }
+  .cm-tab{ height:185px; padding-top:58px; }
+  .cm-tab__icon{ max-height:110px; }
+}
+
+@media (max-width: 980px){
+  .cm-hero{ flex-direction:column; }
+  .cm-hero__right{ width:100%; height:180px; min-width:unset; }
+
+  .cm-tabs{ grid-template-columns: repeat(2, 1fr); }
+  .cm-tab{ height:180px; padding-top:56px; }
+  .cm-tab__icon{ max-height:105px; }
+
+  .cm-grid--2{ grid-template-columns: 1fr; }
+  .cm-grid--2 .cm-card:nth-child(odd){ border-right: 0; }
+
+  .cm-grid--2 .cm-card{ border-bottom: 2px solid var(--cm-dark); }
+  .cm-grid--2 .cm-card:last-child{ border-bottom: 0; }
+
+  .cm-card{
+    grid-template-columns: 60px 1fr;
+    grid-template-areas:
+      "num price"
+      "num body"
+      "img img";
+    justify-content:stretch;
+    min-height:auto;
+    padding:14px 12px;
+  }
+
+  .cm-card__img{
+    width:100%;
+    height:220px;
+    justify-self:start;
+    margin-top:10px;
+  }
+
+  .cm-card--center{
+    grid-template-columns: 60px 1fr !important;
+    grid-template-areas:
+      "num price"
+      "num body"
+      "img img" !important;
+    justify-content:stretch !important;
+  }
+}
