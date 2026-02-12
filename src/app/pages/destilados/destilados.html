@@ -1,1 +1,86 @@
-<p>destilados works!</p>
+<!-- HEADER SUPERIOR (igual estructura que MAGUEY) -->
+<header class="cm-hero">
+  <div class="cm-hero__left">
+    <div class="cm-hero__kicker">CATÁLOGO 2025</div>
+    <div class="cm-hero__title">Destilados de Pulque</div>
+    <div class="cm-hero__sub">
+      Conservamos el espíritu del pulque: sabor y aroma incomparados.
+    </div>
+  </div>
+
+  <div class="cm-hero__right">
+    <img src="assets/24.png" alt="Destilados de pulque" />
+  </div>
+</header>
+
+<section class="cc-stage">
+  <div class="cc-grid">
+    <article
+      class="cc-card"
+      *ngFor="let c of cards; let i = index"
+      [class.cc-card--solo]="i === cards.length - 1"
+      (click)="openModal(c)"
+      role="button"
+      tabindex="0"
+      aria-label="Ver detalle"
+    >
+      <img class="cc-cardImg" [src]="c.image" [alt]="c.title" />
+
+      <div class="cc-pill">{{ c.title }}</div>
+
+      <div class="cc-panel">
+        <p class="cc-desc">{{ c.description }}</p>
+
+        <div class="cc-prices">
+          <div class="cc-price" *ngFor="let p of c.prices">
+            <span class="cc-ml">{{ p.label }}</span>
+            <span class="cc-money">{{ p.value }}</span>
+          </div>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="cc-mayoreo">
+    <div class="cc-mayTitle">Mayoreo</div>
+    <ul class="cc-mayList">
+      <li>Caja con 12 botellas: <b>$400 por botella</b> (mas envio).</li>
+      <li>Precio por litro (a partir de 10 litros): <b>$380 por litro</b> (mas envio).</li>
+    </ul>
+    <div class="cc-mayNote">
+      *Consulta disponibilidad antes de hacer tu pedido. **Consulta precio a granel.
+    </div>
+  </div>
+</section>
+
+<!-- ✅ MODAL -->
+<div class="cc-modal" *ngIf="selected" (click)="closeModal()">
+  <div class="cc-modal__card" (click)="$event.stopPropagation()">
+    <button class="cc-modal__close" type="button" (click)="closeModal()">
+      ✕
+    </button>
+
+    <div class="cc-modal__imgWrap">
+      <img class="cc-modal__img" [src]="selected.image" [alt]="selected.title" />
+    </div>
+
+    <div class="cc-modal__content">
+      <div class="cc-modal__title">{{ selected.title }}</div>
+
+      <div class="cc-modal__prices">
+        <div class="cc-modal__price" *ngFor="let p of selected.prices">
+          <span class="cc-modal__ml">{{ p.label }}</span>
+          <span class="cc-modal__money">{{ p.value }}</span>
+        </div>
+      </div>
+
+      <button
+        class="cc-modal__btn"
+        type="button"
+        (click)="goToPedidos(); $event.stopPropagation()"
+      >
+        Ir a pedidos
+      </button>
+    </div>
+  </div>
+</div>
