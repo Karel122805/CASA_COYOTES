@@ -1,7 +1,27 @@
+<!-- ======================================================
+     CATÁLOGO DE SERVICIOS AGRÍCOLAS
+     Sección estructurada para presentar servicios
+     relacionados al cultivo del maguey.
+     Componentes principales:
+     - Hero superior (título, descripción e imagen)
+     - Navegación interna (tabs)
+     - Bloque de servicios (tarjetas con precio y detalle)
+====================================================== -->
 <section class="catalogo-servicios">
 
-  <!-- HERO SUPERIOR -->
+
+  <!-- ==================================================
+       HERO SUPERIOR
+       Encabezado principal del catálogo de servicios.
+       Contiene:
+       - Identificador del catálogo (kicker)
+       - Título de la sección
+       - Descripción breve
+       - Imagen representativa
+  =================================================== -->
   <header class="cs-hero">
+
+    <!-- Columna izquierda: texto -->
     <div class="cs-hero__left">
       <div class="cs-hero__kicker">CATÁLOGO 2025</div>
       <div class="cs-hero__title">Servicios agrícolas</div>
@@ -10,37 +30,78 @@
       </div>
     </div>
 
+    <!-- Columna derecha: imagen -->
     <div class="cs-hero__right">
       <img src="assets/16.png" alt="Servicios agrícolas" />
     </div>
+
   </header>
 
-  <!-- ✅ UN SOLO CUADRO (como tu imagen) -->
+
+
+  <!-- ==================================================
+       NAVEGACIÓN INTERNA (TAB ÚNICO)
+       Implementa un acceso directo a la sección "servicios".
+       - Se usa href="#servicios" para semántica
+       - Se previene el comportamiento por defecto del ancla
+         y se usa scrollTo('servicios') para desplazamiento suave
+  =================================================== -->
   <nav class="cs-tabs">
-    <a class="cs-tab" href="#servicios" (click)="$event.preventDefault(); scrollTo('servicios')">
+
+    <a
+      class="cs-tab"
+      href="#servicios"
+      (click)="$event.preventDefault(); scrollTo('servicios')"
+    >
+      <!-- Etiqueta (pill) del tab -->
       <div class="cs-tab__pill">MAGUEY DE HIJUELOS</div>
 
+      <!-- Icono representativo del tab -->
       <div class="cs-tab__icons">
         <img src="assets/servicios.png" alt="Icono 17">
       </div>
     </a>
+
   </nav>
 
-  <!-- ================== SERVICIOS ================== -->
+
+
+  <!-- ==================================================
+       BLOQUE: SERVICIOS
+       Sección objetivo del scroll interno.
+       Muestra tarjetas de servicios con:
+       - Número
+       - Precio y unidad
+       - Nombre
+       - Descripción breve (meta)
+       - Imagen
+  =================================================== -->
   <section id="servicios" class="cs-block">
+
+    <!-- Título del bloque -->
     <div class="cs-block__title">MAGUEY DE HIJUELOS</div>
 
+
+    <!-- Grid de tarjetas (2 columnas en layout base) -->
     <div class="cs-grid cs-grid--2">
 
-      <!-- 1 -->
+
+      <!-- ==================================================
+           SERVICIO 1: Diseño del plantío
+           id="diseno-plantio" permite enlace directo si se requiere
+      =================================================== -->
       <article id="diseno-plantio" class="cs-card">
+
+        <!-- Número del servicio -->
         <div class="cs-card__num">1.</div>
 
+        <!-- Precio y unidad -->
         <div class="cs-card__price">
           <div class="cs-card__amount">$350.00</div>
           <div class="cs-card__unit">POR HECTÁREA</div>
         </div>
 
+        <!-- Información del servicio -->
         <div class="cs-card__body">
           <div class="cs-card__name">DISEÑO DEL PLANTÍO</div>
           <div class="cs-card__meta">
@@ -48,13 +109,20 @@
           </div>
         </div>
 
+        <!-- Imagen del servicio -->
         <div class="cs-card__img">
           <img src="assets/21.png" alt="Diseño del plantío">
         </div>
+
       </article>
 
-      <!-- 2 -->
+
+
+      <!-- ==================================================
+           SERVICIO 2: Establecimiento de vivero
+      =================================================== -->
       <article id="establecimiento-vivero" class="cs-card">
+
         <div class="cs-card__num">2.</div>
 
         <div class="cs-card__price">
@@ -72,10 +140,19 @@
         <div class="cs-card__img">
           <img src="assets/22.png" alt="Establecimiento de vivero">
         </div>
+
       </article>
 
-      <!-- 3 centrada -->
+
+
+      <!-- ==================================================
+           SERVICIO 3: Mantenimiento de cultivo
+           cs-card--center:
+           Modificador visual para centrar la tarjeta cuando
+           el layout deja una columna libre (caso de número impar).
+      =================================================== -->
       <article id="mantenimiento-cultivo" class="cs-card cs-card--center">
+
         <div class="cs-card__num">3.</div>
 
         <div class="cs-card__price">
@@ -93,6 +170,7 @@
         <div class="cs-card__img">
           <img src="assets/23.png" alt="Mantenimiento de cultivo">
         </div>
+
       </article>
 
     </div>

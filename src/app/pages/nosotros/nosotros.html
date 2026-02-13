@@ -1,33 +1,67 @@
-<!-- HERO SUPERIOR (igual estilo destilados, pero altura controlada) -->
+<!-- ======================================================
+     HERO SUPERIOR
+     Encabezado principal de la sección.
+     Mantiene el estilo visual de "Destilados" con altura
+     controlada mediante CSS (cm-hero y sus modificadores).
+====================================================== -->
 <header class="cm-hero">
+
+  <!-- Contenido textual del hero -->
   <div class="cm-hero__left">
+
+    <!-- Etiqueta/identificador de marca -->
     <div class="cm-hero__kicker">
       CASA COYOTES
     </div>
 
+    <!-- Título principal -->
     <div class="cm-hero__title">
       Destilado de Pulque
     </div>
 
+    <!-- Frase descriptiva o lema -->
     <div class="cm-hero__sub">
       “Conservamos el espíritu del pulque: sabor y aroma incomparables.”
     </div>
+
   </div>
 
+  <!-- Imagen decorativa del hero
+       aria-hidden="true" porque no aporta información adicional
+       al contenido textual ya descrito -->
   <div class="cm-hero__right" aria-hidden="true">
     <img src="assets/40.png" alt="Casa Coyotes" />
   </div>
+
 </header>
 
-<!-- CONTENIDO (texto + ilustración) -->
+
+
+<!-- ======================================================
+     SECCIÓN "ABOUT" (CONTENIDO PRINCIPAL)
+     Distribuye contenido en una rejilla:
+     - Columna izquierda: texto tipo pergamino con scroll
+     - Columna derecha: ilustración
+     Esta sección comunica la historia y esencia de la marca.
+====================================================== -->
 <section class="cc-about">
+
+  <!-- Grid general: texto + imagen -->
   <div class="cc-about__grid">
 
-    <!-- ✅ TEXTO EN PERGAMINO -->
+    <!-- ==================================================
+         BLOQUE DE TEXTO (ESTILO PERGAMINO)
+         Contiene un contenedor con scroll para mantener
+         una altura visual controlada sin crecer indefinidamente.
+    =================================================== -->
     <div class="cc-about__text">
+
+      <!-- Contenedor con scroll accesible
+           aria-label para describir el contenido al lector de pantalla -->
       <div class="cc-scroll" aria-label="Historia de Casa Coyotes">
         <div class="cc-scroll__inner">
 
+          <!-- Párrafo 1: contexto histórico del pulque + cita -->
           <p>
             El pulque desempeñó un papel primordial en el mundo indígena prehispánico, tanto en los aspectos
             místicos como económicos. Con el paso del tiempo, especialmente durante el siglo XVII, la actividad
@@ -36,12 +70,14 @@
             <span class="cc-cite">(Fideicomiso Centro Histórico de la Ciudad de México, 2023).</span>
           </p>
 
+          <!-- Párrafo 2: origen de la marca -->
           <p>
             Creada en el año 2019 bajo la idea de Jesús Avilés Jiménez, maestro mezcalero, Casa Coyotes surge
             con un concepto artesanal y familiar, comprometido con el entorno y la tradición del maguey.
             Su propósito es enriquecer y preservar la cultura pulquera, manteniendo viva la esencia del campo hidalguense.
           </p>
 
+          <!-- Párrafo 3: procesos y enfoque sustentable -->
           <p>
             Cada una de sus prácticas refleja respeto por la tierra y por el maguey Salmiana, especie cultivada
             desde la semilla y el hijuelo con procesos sustentables. El resultado es un producto artesanal que
@@ -49,6 +85,7 @@
             logrando sabores auténticos que evocan historia, identidad y raíces.
           </p>
 
+          <!-- Párrafo 4: propuesta de valor y variedad -->
           <p>
             En Casa Coyotes, el alma del maguey se transforma en arte:
             destilados con notas cítricas, de hierbas, café, chile rayado y chinicuil, además de sales artesanales
@@ -62,18 +99,57 @@
       </div>
     </div>
 
-    <!-- IMAGEN DERECHA -->
+
+
+    <!-- ==================================================
+         ILUSTRACIÓN DERECHA
+         Elemento visual de apoyo. Se marca como decorativo
+         para lectores de pantalla mediante aria-hidden.
+    =================================================== -->
     <div class="cc-about__img" aria-hidden="true">
       <img src="assets/41.png" alt="Ilustración Casa Coyotes" />
     </div>
 
   </div>
 
-  <!-- CARRUSEL COVERFLOW -->
-  <section class="cc-carousel" aria-label="Carrusel de publicaciones de Instagram">
-    <button class="cc-arrow cc-arrow--left" type="button" (click)="prev()" aria-label="Anterior">‹</button>
 
+
+  <!-- ======================================================
+       CARRUSEL TIPO COVERFLOW (PUBLICACIONES)
+       Objetivo:
+       - Mostrar una galería de publicaciones (posts)
+       - Permitir navegación con botones prev/next
+       - Abrir la publicación al hacer clic o presionar Enter
+       Estructura:
+       - Botón anterior
+       - Track con slides generadas por *ngFor
+       - Botón siguiente
+  ======================================================= -->
+  <section class="cc-carousel" aria-label="Carrusel de publicaciones de Instagram">
+
+    <!-- Botón anterior -->
+    <button
+      class="cc-arrow cc-arrow--left"
+      type="button"
+      (click)="prev()"
+      aria-label="Anterior"
+    >
+      ‹
+    </button>
+
+    <!-- Track del carrusel -->
     <div class="cc-track">
+
+      <!-- ==================================================
+           SLIDE INDIVIDUAL
+           - Se genera con *ngFor
+           - La clase is-active marca el slide principal
+           - data-pos se usa para posicionamiento/animación
+           - Interacción:
+             - click abre la publicación
+             - Enter (keydown.enter) también abre la publicación
+           - tabindex y role permiten accesibilidad por teclado
+      =================================================== -->
       <div
         class="cc-slide"
         *ngFor="let p of posts; let i = index"
@@ -85,10 +161,25 @@
         role="button"
         aria-label="Ver publicación"
       >
-        <img [src]="p.image" [alt]="p.alt" draggable="false" />
+        <img
+          [src]="p.image"
+          [alt]="p.alt"
+          draggable="false"
+        />
       </div>
+
     </div>
 
-    <button class="cc-arrow cc-arrow--right" type="button" (click)="next()" aria-label="Siguiente">›</button>
+    <!-- Botón siguiente -->
+    <button
+      class="cc-arrow cc-arrow--right"
+      type="button"
+      (click)="next()"
+      aria-label="Siguiente"
+    >
+      ›
+    </button>
+
   </section>
+
 </section>

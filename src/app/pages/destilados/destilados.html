@@ -1,5 +1,12 @@
-<!-- HEADER SUPERIOR (igual estructura que MAGUEY) -->
+<!-- ======================================================
+     HERO / ENCABEZADO SUPERIOR
+     Sección principal del catálogo de Destilados.
+     Mantiene la misma estructura visual que la página
+     de Maguey para conservar coherencia de diseño.
+====================================================== -->
 <header class="cm-hero">
+
+  <!-- Contenedor izquierdo: información textual -->
   <div class="cm-hero__left">
     <div class="cm-hero__kicker">CATÁLOGO 2025</div>
     <div class="cm-hero__title">Destilados de Pulque</div>
@@ -8,13 +15,36 @@
     </div>
   </div>
 
+  <!-- Contenedor derecho: imagen representativa -->
   <div class="cm-hero__right">
     <img src="assets/24.png" alt="Destilados de pulque" />
   </div>
+
 </header>
 
+
+
+<!-- ======================================================
+     SECCIÓN PRINCIPAL DEL CATÁLOGO
+     Contiene:
+     - Tarjetas dinámicas generadas con Angular
+     - Información de mayoreo
+====================================================== -->
 <section class="cc-stage">
+
+  <!-- Grid contenedor de tarjetas -->
   <div class="cc-grid">
+
+    <!-- ==================================================
+         TARJETA DE PRODUCTO
+         Se genera dinámicamente con *ngFor
+         Cada tarjeta:
+         - Muestra imagen
+         - Nombre del producto
+         - Descripción
+         - Lista de precios
+         - Abre modal al hacer clic
+    =================================================== -->
     <article
       class="cc-card"
       *ngFor="let c of cards; let i = index"
@@ -24,56 +54,108 @@
       tabindex="0"
       aria-label="Ver detalle"
     >
+
+      <!-- Imagen del producto -->
       <img class="cc-cardImg" [src]="c.image" [alt]="c.title" />
 
+      <!-- Título del producto -->
       <div class="cc-pill">{{ c.title }}</div>
 
+      <!-- Panel inferior con descripción y precios -->
       <div class="cc-panel">
+
+        <!-- Descripción -->
         <p class="cc-desc">{{ c.description }}</p>
 
+        <!-- Lista de precios dinámicos -->
         <div class="cc-prices">
           <div class="cc-price" *ngFor="let p of c.prices">
             <span class="cc-ml">{{ p.label }}</span>
             <span class="cc-money">{{ p.value }}</span>
           </div>
         </div>
+
       </div>
     </article>
   </div>
 
+
+
+  <!-- ==================================================
+       SECCIÓN DE MAYOREO
+       Información de precios especiales por volumen
+  =================================================== -->
   <div class="cc-mayoreo">
+
     <div class="cc-mayTitle">Mayoreo</div>
+
     <ul class="cc-mayList">
       <li>Caja con 12 botellas: <b>$400 por botella</b> (mas envio).</li>
       <li>Precio por litro (a partir de 10 litros): <b>$380 por litro</b> (mas envio).</li>
     </ul>
+
     <div class="cc-mayNote">
-      *Consulta disponibilidad antes de hacer tu pedido. **Consulta precio a granel.
+      *Consulta disponibilidad antes de hacer tu pedido.
+      **Consulta precio a granel.
     </div>
+
   </div>
+
 </section>
 
-<!-- ✅ MODAL -->
+
+
+<!-- ======================================================
+     MODAL DE DETALLE DE PRODUCTO
+     Se muestra únicamente cuando existe "selected"
+     Permite:
+     - Visualizar imagen ampliada
+     - Ver precios
+     - Redirigir a la sección de pedidos
+====================================================== -->
 <div class="cc-modal" *ngIf="selected" (click)="closeModal()">
+
+  <!-- Contenedor interno del modal -->
   <div class="cc-modal__card" (click)="$event.stopPropagation()">
-    <button class="cc-modal__close" type="button" (click)="closeModal()">
+
+    <!-- Botón de cierre -->
+    <button
+      class="cc-modal__close"
+      type="button"
+      (click)="closeModal()"
+    >
       ✕
     </button>
 
+    <!-- Imagen ampliada -->
     <div class="cc-modal__imgWrap">
-      <img class="cc-modal__img" [src]="selected.image" [alt]="selected.title" />
+      <img
+        class="cc-modal__img"
+        [src]="selected.image"
+        [alt]="selected.title"
+      />
     </div>
 
+    <!-- Contenido informativo -->
     <div class="cc-modal__content">
-      <div class="cc-modal__title">{{ selected.title }}</div>
 
+      <!-- Título del producto -->
+      <div class="cc-modal__title">
+        {{ selected.title }}
+      </div>
+
+      <!-- Lista de precios -->
       <div class="cc-modal__prices">
-        <div class="cc-modal__price" *ngFor="let p of selected.prices">
+        <div
+          class="cc-modal__price"
+          *ngFor="let p of selected.prices"
+        >
           <span class="cc-modal__ml">{{ p.label }}</span>
           <span class="cc-modal__money">{{ p.value }}</span>
         </div>
       </div>
 
+      <!-- Botón de redirección -->
       <button
         class="cc-modal__btn"
         type="button"
@@ -81,6 +163,7 @@
       >
         Ir a pedidos
       </button>
+
     </div>
   </div>
 </div>

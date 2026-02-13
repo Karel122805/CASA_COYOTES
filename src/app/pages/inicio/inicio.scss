@@ -1,10 +1,22 @@
+/* ======================================================
+   ESTILOS GENERALES DEL COMPONENTE
+   Define tipografía base y color de fondo para toda la vista.
+====================================================== */
 :host {
   display: block;
   font-family: Helvetica, Arial, sans-serif;
   background: #d8d8d8;
 }
 
-/* HERO */
+
+
+/* ======================================================
+   HERO (CABECERA PRINCIPAL)
+   Sección superior con:
+   - Fondo con gradientes (radial + linear)
+   - Texto centrado (título + descripción)
+   - Espaciado vertical amplio para jerarquía visual
+====================================================== */
 .hero {
   background:
     radial-gradient(1100px 420px at 50% 35%, rgba(126, 170, 140, 0.30), transparent 60%),
@@ -14,6 +26,7 @@
   color: #ffffff;
 }
 
+/* Título principal del hero */
 .hero h1 {
   margin: 0;
   font-weight: 700;
@@ -21,13 +34,22 @@
   letter-spacing: 0.3px;
 }
 
+/* Texto de apoyo */
 .hero p {
   margin-top: 12px;
   font-size: 14px;
   opacity: 0.9;
 }
 
-/* SECCIÓN CENTRAL */
+
+
+/* ======================================================
+   SECCIÓN CENTRAL (CONTENIDO PRINCIPAL)
+   Layout inicial en 3 columnas:
+   - Ornamento izquierdo
+   - Grid central de tarjetas
+   - Ornamento derecho
+====================================================== */
 .middle {
   padding: 46px 24px;
   display: grid;
@@ -36,7 +58,13 @@
   gap: 34px;
 }
 
-/* Ornamentos */
+
+
+/* ======================================================
+   ORNAMENTOS LATERALES
+   Imágenes decorativas con sombra.
+   Se ocultan en pantallas medianas/pequeñas.
+====================================================== */
 .ornament {
   width: 260px;
   max-width: 100%;
@@ -45,21 +73,36 @@
   filter: drop-shadow(0 18px 14px rgba(0, 0, 0, 0.18));
 }
 
-/* GRID */
+
+
+/* ======================================================
+   GRID DE TARJETAS
+   Desktop: 4 columnas
+   perspective: habilita el efecto de inclinación (tilt)
+   en hover sin verse agresivo.
+====================================================== */
 .cards {
   width: min(980px, 100%);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 26px;
-  perspective: 900px; /* para tilt suave */
+  perspective: 900px;
 }
 
-/* =========================
-   CARD: Animaciones modernas
-   ========================= */
 
+
+/* ======================================================
+   TARJETA (CARD)
+   Componentes y comportamientos:
+   - Entrada animada al cargar (cardIn)
+   - Hover con elevación, brillo y tilt sutil
+   - Pseudo-elementos:
+     ::before (glow con conic-gradient)
+     ::after  (shine/reflejo animado)
+   - Accesibilidad: focus-visible y reduce motion
+====================================================== */
 .card {
-  /* para delays desde HTML */
+  /* Delay controlado desde HTML mediante --d */
   --d: 0ms;
 
   position: relative;
@@ -76,14 +119,15 @@
   box-shadow: 0 14px 22px rgba(0, 0, 0, 0.18);
   border: 1px solid rgba(255, 255, 255, 0.10);
 
+  /* Estado inicial para la animación de entrada */
   transform: translateY(12px);
   opacity: 0;
 
-  /* entrada suave al cargar */
+  /* Animación de entrada al renderizar */
   animation: cardIn 520ms ease forwards;
   animation-delay: var(--d);
 
-  /* suavidad */
+  /* Transiciones para hover */
   transition:
     transform 220ms ease,
     box-shadow 220ms ease,
@@ -91,7 +135,7 @@
     filter 220ms ease;
 }
 
-/* borde “glow” con gradiente (se enciende en hover) */
+/* Glow de borde con gradiente (se activa en hover) */
 .card::before {
   content: "";
   position: absolute;
@@ -110,7 +154,7 @@
   transition: opacity 220ms ease;
 }
 
-/* shine (reflejo) */
+/* Reflejo (shine) que cruza la tarjeta en hover */
 .card::after {
   content: "";
   position: absolute;
@@ -129,7 +173,7 @@
   z-index: 0;
 }
 
-/* hover: lift + glow + tilt sutil */
+/* Hover: elevación + inclinación leve + glow */
 .card:hover {
   transform: translateY(-8px) rotateX(2deg) rotateY(-2deg);
   box-shadow: 0 22px 34px rgba(0, 0, 0, 0.22);
@@ -141,19 +185,24 @@
   opacity: 1;
 }
 
-/* shine animado al pasar el mouse */
+/* Shine animado en hover */
 .card:hover::after {
   opacity: 1;
   animation: shine 820ms ease;
 }
 
-/* focus accesible (teclado) */
+/* Estado focus para navegación por teclado */
 .card:focus-visible {
   outline: 3px solid rgba(201, 168, 91, 0.8);
   outline-offset: 4px;
 }
 
-/* Pastilla */
+
+
+/* ======================================================
+   PILL (ETIQUETA SUPERIOR)
+   Resalta la categoría/etiqueta dentro de la tarjeta.
+====================================================== */
 .pill {
   position: relative;
   z-index: 1;
@@ -165,17 +214,23 @@
   color: #1a1a1a;
   font-weight: 700;
   font-size: 12px;
+
   transform-origin: left center;
   transition: transform 220ms ease, box-shadow 220ms ease;
 }
 
-/* micro interacción pill */
+/* Interacción sutil al hover de la tarjeta */
 .card:hover .pill {
   transform: translateY(-1px) scale(1.03);
   box-shadow: 0 10px 16px rgba(0,0,0,0.18);
 }
 
-/* Título y texto */
+
+
+/* ======================================================
+   TÍTULO Y TEXTO
+   Se mantienen por encima de los efectos (z-index: 1).
+====================================================== */
 .title {
   position: relative;
   z-index: 1;
@@ -198,14 +253,21 @@
   white-space: pre-line;
 }
 
-/* Flechita decorativa */
+
+
+/* ======================================================
+   INDICADOR DE NAVEGACIÓN (FLECHA)
+   Elemento decorativo que aparece solo en hover.
+====================================================== */
 .arrow {
   position: absolute;
   right: 14px;
   bottom: 14px;
   font-weight: 700;
+
   opacity: 0;
   transform: translateX(-6px);
+
   transition: opacity 220ms ease, transform 220ms ease;
   z-index: 1;
 }
@@ -215,7 +277,13 @@
   transform: translateX(0);
 }
 
-/* Animaciones */
+
+
+/* ======================================================
+   ANIMACIONES
+   - cardIn: entrada inicial de la tarjeta
+   - shine: recorrido del reflejo sobre la tarjeta
+====================================================== */
 @keyframes cardIn {
   to {
     opacity: 1;
@@ -224,15 +292,17 @@
 }
 
 @keyframes shine {
-  0% {
-    transform: rotate(12deg) translateX(-40%);
-  }
-  100% {
-    transform: rotate(12deg) translateX(40%);
-  }
+  0%   { transform: rotate(12deg) translateX(-40%); }
+  100% { transform: rotate(12deg) translateX(40%); }
 }
 
-/* Reduce motion (accesibilidad) */
+
+
+/* ======================================================
+   ACCESIBILIDAD: REDUCCIÓN DE MOVIMIENTO
+   Desactiva animaciones/transiciones para usuarios que
+   prefieren menor movimiento.
+====================================================== */
 @media (prefers-reduced-motion: reduce) {
   .card {
     animation: none;
@@ -245,7 +315,14 @@
   }
 }
 
-/* Responsive */
+
+
+/* ======================================================
+   RESPONSIVE
+   Ajustes de layout para tablet y móvil.
+====================================================== */
+
+/* Pantallas medianas: se apila el contenido y desaparecen ornamentos */
 @media (max-width: 1100px) {
   .middle {
     grid-template-columns: 1fr;
@@ -260,6 +337,7 @@
   }
 }
 
+/* Móviles: 1 columna para tarjetas */
 @media (max-width: 560px) {
   .cards {
     grid-template-columns: 1fr;

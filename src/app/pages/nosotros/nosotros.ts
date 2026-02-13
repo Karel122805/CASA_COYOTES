@@ -34,7 +34,7 @@ export class Nosotros implements OnInit, OnDestroy {
   active = 2;
 
   private timerId: number | null = null;
-  private readonly intervalMs = 3000; // ✅ 10 segundos
+  private readonly intervalMs = 3000; // 3 seg
 
   constructor(
     private zone: NgZone,
@@ -52,7 +52,6 @@ export class Nosotros implements OnInit, OnDestroy {
   private startAutoplay(): void {
     this.stopAutoplay();
 
-    // ✅ evitamos que Angular se "duerma" en zoneless:
     this.timerId = window.setInterval(() => {
       this.zone.run(() => {
         this.active = (this.active + 1) % this.posts.length;
@@ -82,7 +81,6 @@ export class Nosotros implements OnInit, OnDestroy {
     this.restartAutoplay();
   }
 
-  /** ✅ Click: si es centro => abre; si es lateral => se vuelve centro */
   onSlideClick(index: number, url: string): void {
     if (index === this.active) {
       this.openPost(url);

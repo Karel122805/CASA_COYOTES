@@ -1,5 +1,20 @@
+<!-- ======================================================
+     HEADER PRINCIPAL - CASA COYOTES
+     Barra de navegación responsive con:
+     - Logo
+     - Menú desktop
+     - Menú móvil (drawer lateral)
+     - Animaciones y control dinámico con Angular
+====================================================== -->
 <header class="cc-header cc-anim-in" [class.is-hidden]="isHeaderHidden">
+
+  <!-- Contenedor interno del header -->
   <div class="cc-header__inner">
+
+    <!-- =========================================
+         LOGOTIPO / MARCA
+         Redirige a la página de inicio
+    ========================================== -->
     <a
       routerLink="/inicio"
       class="cc-brand"
@@ -13,7 +28,14 @@
       >
     </a>
 
+
+    <!-- =========================================
+         MENÚ DE NAVEGACIÓN DESKTOP
+         Visible en pantallas grandes
+         Usa routerLinkActive para estado activo
+    ========================================== -->
     <nav class="cc-nav cc-nav--desktop">
+
       <a
         routerLink="/inicio"
         class="cc-pill"
@@ -22,23 +44,44 @@
       >
         Inicio
       </a>
-      <a routerLink="/destilados" class="cc-pill" routerLinkActive="is-active">
+
+      <a routerLink="/destilados"
+         class="cc-pill"
+         routerLinkActive="is-active">
         Destilados
       </a>
-      <a routerLink="/maguey" class="cc-pill" routerLinkActive="is-active">
+
+      <a routerLink="/maguey"
+         class="cc-pill"
+         routerLinkActive="is-active">
         Maguey
       </a>
-      <a routerLink="/servicios" class="cc-pill" routerLinkActive="is-active">
+
+      <a routerLink="/servicios"
+         class="cc-pill"
+         routerLinkActive="is-active">
         Servicios
       </a>
-      <a routerLink="/nosotros" class="cc-pill" routerLinkActive="is-active">
+
+      <a routerLink="/nosotros"
+         class="cc-pill"
+         routerLinkActive="is-active">
         Nosotros
       </a>
-      <a routerLink="/pedidos" class="cc-pill" routerLinkActive="is-active">
+
+      <a routerLink="/pedidos"
+         class="cc-pill"
+         routerLinkActive="is-active">
         Pedidos
       </a>
+
     </nav>
 
+
+    <!-- =========================================
+         BOTÓN HAMBURGUESA (MÓVIL)
+         Controla la apertura del menú lateral
+    ========================================== -->
     <button
       type="button"
       class="cc-burger"
@@ -51,20 +94,34 @@
         [class.open]="menuOpen()"
       ></span>
     </button>
+
   </div>
 
+
+  <!-- =========================================
+       OVERLAY + DRAWER MÓVIL
+       Se activa cuando menuOpen() es true
+  ========================================== -->
   <div
     class="cc-overlay"
     [class.open]="menuOpen()"
     (click)="closeMenu()"
   >
+
+    <!-- Drawer lateral -->
     <div class="cc-drawer" (click)="$event.stopPropagation()">
+
+      <!-- Encabezado del drawer -->
       <div class="cc-drawer__top">
+
+        <!-- Logo en menú móvil -->
         <img
           class="cc-drawer__logo"
           src="assets/cc-logo.png"
           alt="CASA COYOTES"
         >
+
+        <!-- Botón cerrar -->
         <button
           type="button"
           class="cc-drawer__close"
@@ -73,9 +130,13 @@
         >
           ✕
         </button>
+
       </div>
 
+
+      <!-- Navegación móvil -->
       <nav class="cc-drawer__nav">
+
         <a
           routerLink="/inicio"
           class="cc-drawer__link"
@@ -85,6 +146,7 @@
         >
           Inicio
         </a>
+
         <a
           routerLink="/destilados"
           class="cc-drawer__link"
@@ -93,6 +155,7 @@
         >
           Destilados
         </a>
+
         <a
           routerLink="/maguey"
           class="cc-drawer__link"
@@ -101,6 +164,7 @@
         >
           Maguey
         </a>
+
         <a
           routerLink="/servicios"
           class="cc-drawer__link"
@@ -109,6 +173,7 @@
         >
           Servicios
         </a>
+
         <a
           routerLink="/nosotros"
           class="cc-drawer__link"
@@ -117,6 +182,7 @@
         >
           Nosotros
         </a>
+
         <a
           routerLink="/pedidos"
           class="cc-drawer__link"
@@ -125,7 +191,9 @@
         >
           Pedidos
         </a>
+
       </nav>
     </div>
   </div>
+
 </header>

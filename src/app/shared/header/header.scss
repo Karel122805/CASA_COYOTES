@@ -1,65 +1,104 @@
+/* ======================================================
+   ANIMACIONES GLOBALES
+   - ccFadeIn: entrada suave desde arriba con opacidad
+   - ccSheen: brillo horizontal decorativo en botones
+====================================================== */
+
+/* Animación de aparición (fade + desplazamiento vertical) */
 @keyframes ccFadeIn {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
+/* Efecto de "brillo" que cruza de izquierda a derecha */
 @keyframes ccSheen {
   0%   { transform: translateX(-140%); opacity: 0; }
   20%  { opacity: .20; }
   100% { transform: translateX(220%); opacity: 0; }
 }
 
+/* Clase utilitaria para aplicar entrada animada */
 .cc-anim-in { animation: ccFadeIn .55s cubic-bezier(.2,.9,.2,1) both; }
 
+
+
+/* ======================================================
+   REGLAS BASE
+   Normaliza el box model y mejora interacción en móviles
+====================================================== */
+
+/* Todos los elementos usan box-sizing: border-box */
 * { box-sizing: border-box; }
+
+/* Evita el highlight azul al tocar enlaces y botones en móviles */
 a, button { -webkit-tap-highlight-color: transparent; }
 
-/* =========================
-   HEADER (contorno verde en TODO el header)
-========================= */
-.cc-header{
-  /* ✅ colores (tu look) */
-  --cc-bar:    #103020;
-  --cc-pill:   #386838;
-  --cc-hover:  #407040;
-  --cc-active: #285828;
-  --cc-frame:  #50C860;
-  --cc-gold:   #C2A441;
-  --cc-text:   #EEF2EF;
 
-  /* ✅ para hide/show con scroll */
-  position: fixed;   /* antes: sticky */
+
+/* ======================================================
+   HEADER (BARRA SUPERIOR)
+   Header fijo con:
+   - Contorno verde en todo el header
+   - Hide/show al hacer scroll (clase is-hidden)
+   - Variables CSS para controlar colores del tema
+====================================================== */
+.cc-header{
+  /* Variables de color del header */
+  --cc-bar:    #103020; /* fondo principal */
+  --cc-pill:   #386838; /* fondo de botones */
+  --cc-hover:  #407040; /* hover de botones */
+  --cc-active: #285828; /* estado activo */
+  --cc-frame:  #50C860; /* contornos verdes */
+  --cc-gold:   #C2A441; /* acento dorado (activo) */
+  --cc-text:   #EEF2EF; /* texto principal */
+
+  /* Header fijo para permitir ocultar/mostrar con transform */
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 9999;
 
+  /* Animación de hide/show */
   transform: translateY(0);
   transition: transform .22s ease;
   will-change: transform;
 
+  /* Apariencia */
   background: var(--cc-bar);
   box-shadow: 0 10px 24px rgba(0,0,0,.18);
 
-  /* ✅ contorno verde global (PC y móvil) */
+  /* Contorno global */
   border: 2px solid rgba(80,200,96,.55);
   outline: 1px solid rgba(0,0,0,.18);
 }
 
+/* Estado oculto del header al hacer scroll */
 .cc-header.is-hidden{
   transform: translateY(-110%);
 }
 
-/* ✅ reserva espacio para que NO tape contenido
-   (tu TS actualiza --cc-header-h dinámicamente) */
+
+
+/* ======================================================
+   RESERVA DE ESPACIO PARA EL HEADER
+   body usa padding-top para evitar que el contenido quede
+   debajo del header fijo.
+   El valor --cc-header-h puede actualizarse desde TS.
+====================================================== */
 :root{
-  --cc-header-h: 76px; /* fallback */
+  --cc-header-h: 76px; /* fallback si TS no lo actualiza */
 }
 body{
   padding-top: var(--cc-header-h);
 }
 
-/* Inner sin rectángulo extra */
+
+
+/* ======================================================
+   CONTENEDOR INTERNO DEL HEADER
+   Alinea logo, navegación desktop y botón hamburguesa.
+====================================================== */
 .cc-header__inner{
   max-width: 1200px;
   margin: 0 auto;
@@ -72,19 +111,27 @@ body{
   gap: 14px;
 }
 
-/* Logo */
+
+
+/* ======================================================
+   LOGO / MARCA
+====================================================== */
 .cc-brand{ display:flex; align-items:center; }
 .cc-brand__img{ height: 24px; width:auto; display:block; }
 
-/* =========================
-   NAV desktop
-========================= */
+
+
+/* ======================================================
+   NAVEGACIÓN DESKTOP
+   Píldoras con efecto hover y estado activo.
+====================================================== */
 .cc-nav{
   display:flex;
   align-items:center;
   gap: 10px;
 }
 
+/* Botón tipo "píldora" */
 .cc-pill{
   position: relative;
   text-decoration: none;
@@ -104,6 +151,7 @@ body{
   transition: transform .14s ease, box-shadow .14s ease, border-color .14s ease, color .14s ease, background .14s ease;
 }
 
+/* Capa de brillo decorativo */
 .cc-pill::after{
   content:"";
   position:absolute;
@@ -115,6 +163,7 @@ body{
   pointer-events:none;
 }
 
+/* Hover */
 .cc-pill:hover{
   background: var(--cc-hover);
   transform: translateY(-1px);
@@ -125,6 +174,7 @@ body{
   animation: ccSheen 1.05s ease both;
 }
 
+/* Estado activo (routerLinkActive="is-active") */
 .cc-pill.is-active{
   background: var(--cc-active);
   color: var(--cc-gold);
@@ -132,29 +182,41 @@ body{
   box-shadow: inset 0 0 0 1px rgba(0,0,0,.24), 0 10px 18px rgba(0,0,0,.22);
 }
 
-/* =========================
-   Drawer/overlay ocultos por defecto (PC)
-========================= */
+
+
+/* ======================================================
+   ELEMENTOS MÓVILES OCULTOS POR DEFECTO EN DESKTOP
+   El menú lateral se habilita con media query.
+====================================================== */
 .cc-burger{ display:none; }
 .cc-overlay{ display:none !important; }
 
-/* =========================
-   Tablet: compacta
-========================= */
+
+
+/* ======================================================
+   RESPONSIVE: TABLET (compacta)
+====================================================== */
 @media (max-width: 900px){
   .cc-header__inner{ padding: 10px 12px; }
   .cc-nav{ gap: 8px; }
   .cc-pill{ padding: 4px 12px; }
 }
 
-/* =========================
-   MÓVIL: menú que ACABA donde acaban los botones
-   (sin “bloque verde” gigante)
-========================= */
+
+
+/* ======================================================
+   RESPONSIVE: MÓVIL (MENÚ DRAWER)
+   Cambios principales:
+   - Se oculta la navegación desktop
+   - Se habilita botón hamburguesa
+   - Overlay oscurece el fondo
+   - Drawer cae desde arriba y su altura depende del contenido
+====================================================== */
 @media (max-width: 640px){
+  /* Oculta navegación desktop */
   .cc-nav--desktop{ display:none; }
 
-  /* burger */
+  /* Botón hamburguesa */
   .cc-burger{
     display: inline-flex;
     width: 44px;
@@ -167,6 +229,7 @@ body{
     justify-content:center;
   }
 
+  /* Icono de la hamburguesa */
   .cc-burger__icon{
     position: relative;
     width: 22px;
@@ -189,11 +252,12 @@ body{
   .cc-burger__icon::before{ top:-7px; }
   .cc-burger__icon::after{ top: 7px; }
 
+  /* Estado abierto: se convierte en "X" */
   .cc-burger__icon.open{ background: transparent; }
   .cc-burger__icon.open::before{ top:0; transform: rotate(45deg); }
   .cc-burger__icon.open::after{ top:0; transform: rotate(-45deg); }
 
-  /* overlay */
+  /* Overlay del menú móvil */
   .cc-overlay{
     display:block !important;
     position: fixed;
@@ -210,7 +274,7 @@ body{
     pointer-events: auto;
   }
 
-  /* ✅ drawer: NO fullscreen, altura según contenido */
+  /* Drawer móvil: no ocupa toda la pantalla, solo lo necesario */
   .cc-drawer{
     position: fixed;
     top: 0;
@@ -234,11 +298,12 @@ body{
     padding: 14px 14px 18px;
   }
 
+  /* Drawer visible cuando el overlay está abierto */
   .cc-overlay.open .cc-drawer{
     transform: translateY(0);
   }
 
-  /* top del drawer */
+  /* Encabezado del drawer: logo + botón cerrar */
   .cc-drawer__top{
     display:flex;
     align-items:center;
@@ -250,6 +315,7 @@ body{
     margin-bottom: 14px;
   }
 
+  /* Logo dentro del drawer */
   .cc-drawer__logo{
     height: 26px;
     width: auto;
@@ -257,6 +323,7 @@ body{
     filter: drop-shadow(0 2px 6px rgba(0,0,0,.25));
   }
 
+  /* Botón de cierre del drawer */
   .cc-drawer__close{
     width: 44px;
     height: 44px;
@@ -268,13 +335,14 @@ body{
     cursor:pointer;
   }
 
-  /* links */
+  /* Lista de enlaces del menú móvil */
   .cc-drawer__nav{
     display:flex;
     flex-direction: column;
     gap: 12px;
   }
 
+  /* Enlace del menú móvil */
   .cc-drawer__link{
     text-decoration:none;
     color: var(--cc-text);
@@ -288,6 +356,7 @@ body{
     font-size: 16px;
   }
 
+  /* Estado activo del enlace móvil */
   .cc-drawer__link.is-active{
     background: var(--cc-active);
     color: var(--cc-gold);
@@ -295,6 +364,7 @@ body{
     box-shadow: 0 0 0 3px rgba(80,200,96,.12);
   }
 
+  /* Ajustes finos del header en móvil */
   .cc-header__inner{
     padding: 10px 10px;
   }

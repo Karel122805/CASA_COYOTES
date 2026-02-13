@@ -1,10 +1,32 @@
-@keyframes ccFadeIn { from { opacity: 0; transform: translateY(-12px); } to { opacity: 1; transform: translateY(0); } }
-.cc-anim-in { animation: ccFadeIn .6s cubic-bezier(.2,.9,.2,1) both; }
-.footer-delay { animation-delay: .18s; }
+/* ======================================================
+   ANIMACIONES BASE
+   - ccFadeIn: entrada suave (opacidad + desplazamiento)
+   - cc-anim-in: clase utilitaria para aplicar la animación
+   - footer-delay: agrega retraso para sincronizar animaciones
+====================================================== */
+@keyframes ccFadeIn {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* =========================
-   FOOTER
-========================= */
+.cc-anim-in {
+  animation: ccFadeIn .6s cubic-bezier(.2,.9,.2,1) both;
+}
+
+.footer-delay {
+  animation-delay: .18s;
+}
+
+
+
+/* ======================================================
+   FOOTER PRINCIPAL
+   Contenedor exterior del pie de página.
+   Define:
+   - Fondo y color de texto
+   - Separador superior
+   - Sombra para dar profundidad
+====================================================== */
 .cc-footer {
   background: #2b5a3f;
   color: rgba(255,255,255,0.92);
@@ -14,6 +36,13 @@
   box-shadow: 0 -18px 40px rgba(0,0,0,0.12);
 }
 
+
+
+/* ======================================================
+   CONTENEDOR INTERNO
+   Layout en grid con 3 columnas en desktop.
+   Controla ancho máximo, espaciado y tipografía base.
+====================================================== */
 .cc-footer__inner {
   max-width: 1200px;
   margin: 0 auto;
@@ -27,6 +56,13 @@
   font-size: 12px;
 }
 
+
+
+/* ======================================================
+   ESTILOS DE COLUMNA
+   - Título: mayor peso visual
+   - Texto: separación y legibilidad
+====================================================== */
 .cc-col__title {
   font-weight: 900;
   margin-bottom: 10px;
@@ -39,11 +75,22 @@
   line-height: 1.35;
 }
 
-/* Social */
+
+
+/* ======================================================
+   VARIABLES SCSS PARA ICONOS SOCIALES
+   Controlan tamaño, tipografía y separación entre iconos.
+====================================================== */
 $cc-icon-size: 30px;
 $cc-icon-font: 20px;
 $cc-gap: 10px;
 
+
+
+/* ======================================================
+   REDES SOCIALES (CONTENEDOR)
+   Alinea los iconos en una fila con separación uniforme.
+====================================================== */
 .cc-social {
   margin-top: 10px;
   display: flex;
@@ -51,6 +98,16 @@ $cc-gap: 10px;
   align-items: center;
 }
 
+
+
+/* ======================================================
+   ICONO SOCIAL (BOTÓN CIRCULAR)
+   Incluye:
+   - Tamaño fijo y centrado
+   - Sombras y transiciones
+   - Animaciones de entrada y flotación
+   - Variantes por red (Instagram / Facebook)
+====================================================== */
 .cc-social-icon {
   width: $cc-icon-size;
   height: $cc-icon-size;
@@ -60,21 +117,30 @@ $cc-gap: 10px;
   color: #fff;
   text-decoration: none;
 
-  i { font-size: $cc-icon-font; line-height: 1; transform: translateY(1px); }
+  /* Icono (Font Awesome) */
+  i {
+    font-size: $cc-icon-font;
+    line-height: 1;
+    transform: translateY(1px);
+  }
 
+  /* Profundidad y rendimiento */
   box-shadow: 0 6px 14px rgba(0, 0, 0, .18);
   transform: translateZ(0);
   will-change: transform, box-shadow, filter;
 
+  /* Animaciones */
   animation:
     ccSocialIn .55s cubic-bezier(.2,.9,.2,1) both,
     ccSocialFloat 3s ease-in-out .55s infinite;
 
+  /* Transiciones de interacción */
   transition:
     transform .25s cubic-bezier(.2,.9,.2,1),
     box-shadow .25s ease,
     filter .25s ease;
 
+  /* Hover: aumenta tamaño y brillo */
   &:hover {
     transform: scale(1.25);
     box-shadow: 0 14px 30px rgba(0, 0, 0, .35);
@@ -82,8 +148,12 @@ $cc-gap: 10px;
     animation: ccSocialPulse .6s ease-out infinite alternate;
   }
 
-  &:active { transform: scale(1.15); }
+  /* Active: feedback táctil */
+  &:active {
+    transform: scale(1.15);
+  }
 
+  /* Variante Instagram */
   &.ig {
     background: radial-gradient(circle at 30% 30%,
       #feda75 0%,
@@ -94,32 +164,58 @@ $cc-gap: 10px;
     );
   }
 
-  &.fb { background: #1877f2; }
+  /* Variante Facebook */
+  &.fb {
+    background: #1877f2;
+  }
 }
 
+
+
+/* ======================================================
+   ANIMACIONES DE ICONOS SOCIALES
+   - ccSocialIn: aparición con escala
+   - ccSocialFloat: flotación sutil vertical
+   - ccSocialPulse: pulso en hover
+====================================================== */
 @keyframes ccSocialIn {
-  0% { transform: scale(.7); opacity: 0; }
-  60% { transform: scale(1.1); opacity: 1; }
+  0%   { transform: scale(.7); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
   100% { transform: scale(1); }
 }
+
 @keyframes ccSocialFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-2px); }
+  50%      { transform: translateY(-2px); }
 }
+
 @keyframes ccSocialPulse {
   from { transform: scale(1.2); }
-  to { transform: scale(1.3); }
+  to   { transform: scale(1.3); }
 }
 
+
+
+/* ======================================================
+   ACCESIBILIDAD: REDUCCIÓN DE MOVIMIENTO
+   Desactiva animaciones y transiciones si el usuario
+   prefiere reducir movimiento.
+====================================================== */
 @media (prefers-reduced-motion: reduce) {
-  .cc-social-icon { animation: none !important; transition: none !important; }
+  .cc-social-icon {
+    animation: none !important;
+    transition: none !important;
+  }
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 
-/* ✅ pantallas medianas (laptop/tabla grande): más aire y 2 columnas si se aprieta */
+
+/* ======================================================
+   RESPONSIVE
+   Ajustes del grid y espaciados para tablet y móvil.
+====================================================== */
+
+/* Pantallas medianas: reduce padding y gap */
 @media (max-width: 1024px) {
   .cc-footer__inner {
     padding: 18px 14px 20px;
@@ -127,7 +223,7 @@ $cc-gap: 10px;
   }
 }
 
-/* ✅ tablets: 2 columnas (se ve mejor que brincar directo a 1) */
+/* Tablets: 2 columnas para mejorar legibilidad */
 @media (max-width: 900px) {
   .cc-footer__inner {
     grid-template-columns: 1fr 1fr;
@@ -135,13 +231,13 @@ $cc-gap: 10px;
     font-size: 12px;
   }
 
-  /* Que "Visítanos" baje completo en la segunda fila */
+  /* La última columna ocupa toda la fila inferior */
   .cc-col:last-child {
     grid-column: 1 / -1;
   }
 }
 
-/* ✅ móviles: 1 columna, centrado y cómodo */
+/* Móviles: 1 columna centrada */
 @media (max-width: 640px) {
   .cc-footer {
     margin-top: 18px;
@@ -168,7 +264,7 @@ $cc-gap: 10px;
   }
 }
 
-/* ✅ muy pequeño */
+/* Pantallas muy pequeñas: compacta tipografía y padding */
 @media (max-width: 380px) {
   .cc-footer__inner {
     padding: 14px 10px 16px;

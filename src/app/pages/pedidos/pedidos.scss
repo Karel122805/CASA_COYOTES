@@ -30,7 +30,7 @@ button { font-family: inherit; }
    HERO (clon de INICIO + cajas decorativas)
 ========================= */
 .hero-pedidos{
-  /* ✅ EXACTO igual que INICIO */
+  
   background:
     radial-gradient(1100px 420px at 50% 35%, rgba(126, 170, 140, 0.30), transparent 60%),
     linear-gradient(180deg, #0f241a 0%, #244c35 55%, #0f241a 100%);
@@ -38,7 +38,7 @@ button { font-family: inherit; }
   text-align: center;
   color: #ffffff;
 
-  /* ✅ para posicionar las cajas sin afectar tamaño */
+  /*  para posicionar las cajas sin afectar tamaño */
   position: relative;
   overflow: hidden;
 }
@@ -56,13 +56,13 @@ button { font-family: inherit; }
   animation: ccSheen 5.5s ease-in-out infinite;
 }
 
-/* ✅ El texto se comporta como INICIO */
+/*  El texto se comporta como INICIO */
 .hero-text{
   position: relative;
   z-index: 1;
 }
 
-/* ✅ OJO: ahora apuntamos al h1/p como en INICIO */
+/*  OJO: ahora apuntamos al h1/p como en INICIO */
 .hero-pedidos h1{
   margin: 0;
   font-weight: 700;
@@ -76,7 +76,7 @@ button { font-family: inherit; }
   opacity: 0.9;
 }
 
-/* ✅ Cajas decorativas: NO modifican el alto del hero */
+/*  Cajas decorativas: NO modifican el alto del hero */
 .hero-caja{
   width: 170px;
   height: 110px;
@@ -113,7 +113,7 @@ button { font-family: inherit; }
 @media (max-width: 640px) {
   .hero-pedidos {
     grid-template-columns: 1fr;
-    padding: 56px 16px 58px; /* ✅ mismo que INICIO */
+    padding: 56px 16px 58px; /* mismo que INICIO */
     gap: 12px;
   }
 
@@ -622,7 +622,7 @@ button { font-family: inherit; }
   .hero-pedidos { grid-template-columns: 1fr; min-height: auto; padding: 18px 12px; gap: 10px; }
   .hero-caja { display: none; }
 
-  /* ✅ mantener consistencia en móvil, pero un poco más chico */
+  /* mantener consistencia en móvil, pero un poco más chico */
   .hero-text h1 { font-size: 26px; }
 
   .pedidos-wrap { padding: 18px 0 22px; }
@@ -659,7 +659,7 @@ button { font-family: inherit; }
   .field label { font-size: 15px; }
 }
 
-/* ✅ FIX MOBILE: evitar encimados en Productos */
+/* FIX MOBILE: evitar encimados en Productos */
 @media (max-width: 640px) {
   .box-products{
     padding-top: 16px; /* antes 86px */
@@ -707,7 +707,7 @@ button { font-family: inherit; }
   }
 }
 
-/* ✅ Botón X del overlay */
+/* Botón X del overlay */
 .cc-send__card { position: relative; }
 
 .cc-send__x{

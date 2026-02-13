@@ -1,28 +1,80 @@
-<!-- HERO -->
+<!-- ======================================================
+     HERO PRINCIPAL
+     Sección introductoria de la página.
+     Presenta el mensaje central de marca y posiciona
+     el concepto de identidad relacionado con el maguey.
+====================================================== -->
 <section class="hero">
+
+  <!-- Título principal -->
   <h1>El alma del maguey, destilada con historia</h1>
+
+  <!-- Texto descriptivo -->
   <p>
     Destilados de pulque y productos del maguey, hechos con respeto a la tierra hidalguense.
   </p>
+
 </section>
 
-<!-- SECCIÓN CENTRAL -->
-<section class="middle">
-  <img class="ornament ornament--left" src="assets/ornamento-maguey.png" alt="Ornamento" />
 
+
+<!-- ======================================================
+     SECCIÓN CENTRAL
+     Contiene:
+     - Elementos decorativos laterales
+     - Tarjetas dinámicas de navegación
+     Implementa la nueva sintaxis de control de flujo
+     de Angular (@for).
+====================================================== -->
+<section class="middle">
+
+  <!-- Ornamento decorativo izquierdo -->
+  <img
+    class="ornament ornament--left"
+    src="assets/ornamento-maguey.png"
+    alt="Ornamento"
+  />
+
+
+  <!-- ==============================================
+       CONTENEDOR DE TARJETAS
+       Se generan dinámicamente con @for.
+       Cada tarjeta funciona como enlace de navegación.
+  =============================================== -->
   <div class="cards">
+
     @for (c of cards; track c.pill; let i = $index) {
-      <a class="card" [routerLink]="c.link" [style.--d]="(i * 90) + 'ms'">
+
+      <!-- Tarjeta individual -->
+      <a
+        class="card"
+        [routerLink]="c.link"
+        [style.--d]="(i * 90) + 'ms'"
+      >
+
+        <!-- Etiqueta superior -->
         <span class="pill">{{ c.pill }}</span>
 
+        <!-- Título -->
         <h3 class="title">{{ c.title }}</h3>
+
+        <!-- Texto descriptivo -->
         <p class="text">{{ c.text }}</p>
 
-        <!-- flechita decorativa -->
+        <!-- Indicador visual de navegación -->
         <span class="arrow" aria-hidden="true">→</span>
+
       </a>
     }
+
   </div>
 
-  <img class="ornament ornament--right" src="assets/ornamento-maguey.png" alt="Ornamento" />
+
+  <!-- Ornamento decorativo derecho -->
+  <img
+    class="ornament ornament--right"
+    src="assets/ornamento-maguey.png"
+    alt="Ornamento"
+  />
+
 </section>

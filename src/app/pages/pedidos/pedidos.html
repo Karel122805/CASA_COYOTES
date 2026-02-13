@@ -1,24 +1,56 @@
+<!-- ======================================================
+     HERO DE LA PÁGINA DE PEDIDOS
+     Encabezado visual con título y mensaje de envíos.
+     Incluye dos imágenes laterales decorativas.
+====================================================== -->
 <section class="hero-pedidos cc-anim-up hero-delay">
+
+  <!-- Imagen decorativa izquierda -->
   <img class="hero-caja left" src="assets/caja.jpg" alt="Caja" />
 
+  <!-- Texto principal del hero -->
   <div class="hero-text">
     <h1>Formulario de pedidos</h1>
     <p>Envíos a toda la República Mexicana.</p>
   </div>
 
+  <!-- Imagen decorativa derecha -->
   <img class="hero-caja right" src="assets/caja.jpg" alt="Caja" />
 </section>
 
+
+
+<!-- ======================================================
+     FORMULARIO DE PEDIDOS (REACTIVE FORMS)
+     Contenedor principal enlazado a "form" mediante [formGroup].
+     Estructura por secciones:
+     1) Producto(s)
+     2) Datos del cliente
+     3) Domicilio de entrega
+     4) Resumen y envío por WhatsApp
+====================================================== -->
 <div class="pedidos-wrap" [formGroup]="form">
+
+  <!-- Tarjeta contenedora con animación -->
   <div class="pedidos-card cc-anim-up card-delay">
 
+
+    <!-- ==================================================
+         SECCIÓN 1: PRODUCTO
+    =================================================== -->
     <div class="section-title cc-anim-up sec-delay-1">
       <h2>1. Producto</h2>
     </div>
 
     <div class="box box-products cc-anim-up sec-delay-1">
 
-      <!-- ✅ MODO DE COMPRA -->
+      <!-- ==================================================
+           MODO DE COMPRA
+           Control de selección por radio buttons:
+           - menudeo
+           - mayoreo
+           Vinculado al formControlName "modoVenta".
+      =================================================== -->
       <div class="cc-sale-mode">
         <div class="cc-sale-mode__label">Tipo de compra:</div>
 
@@ -33,7 +65,12 @@
         </label>
       </div>
 
-      <!-- ✅ INFO MAYOREO (SOLO DESTILADOS) -->
+
+      <!-- ==================================================
+           INFORMACIÓN DE MAYOREO
+           Visible solo cuando modoVenta === 'mayoreo'.
+           Se enfoca en reglas de mayoreo para destilados.
+      =================================================== -->
       <div class="cc-mayoreo" *ngIf="modoVenta === 'mayoreo'">
         <b>Mayoreo (solo Destilados)</b>
         <ul>
@@ -51,14 +88,26 @@
         </div>
       </div>
 
-      <button type="button" class="btn-add" (click)="addItem()">+ Agregar producto</button>
 
+      <!-- Botón para agregar una línea de producto al FormArray -->
+      <button type="button" class="btn-add" (click)="addItem()">
+        + Agregar producto
+      </button>
+
+
+      <!-- ==================================================
+           LISTA DE PRODUCTOS (FormArray)
+           formArrayName="items" contiene N líneas.
+           Cada línea es un FormGroup referenciado por [formGroupName]="i".
+      =================================================== -->
       <div class="items" formArrayName="items">
         <div
           class="item cc-anim-up item-pop"
           *ngFor="let fg of items.controls; let i = index"
           [formGroupName]="i"
         >
+
+          <!-- Encabezado de la línea: título + botón quitar -->
           <div class="item-top">
             <div class="item-name">Producto #{{ i + 1 }}</div>
 
@@ -72,7 +121,17 @@
             </button>
           </div>
 
+
+          <!-- ==================================================
+               SELECTORES PRINCIPALES
+               - Categoría
+               - Producto
+               - Presentación
+               Disparan cambios para filtrar opciones y precios.
+          =================================================== -->
           <div class="grid-3">
+
+            <!-- Categoría -->
             <div class="field">
               <label>Categoría</label>
               <select formControlName="categoria" (change)="onCategoriaChange(i)">
@@ -81,6 +140,7 @@
               </select>
             </div>
 
+            <!-- Producto filtrado por categoría -->
             <div class="field">
               <label>Producto</label>
               <select formControlName="productoId" (change)="onProductoChange(i)">
@@ -94,6 +154,7 @@
               </select>
             </div>
 
+            <!-- Presentación filtrada por producto -->
             <div class="field">
               <label>Presentación</label>
               <select formControlName="presentacionId">
@@ -106,8 +167,17 @@
                 </option>
               </select>
             </div>
+
           </div>
 
+
+          <!-- ==================================================
+               CANTIDAD
+               Input numérico con mínimo 1.
+               Muestra aviso adicional cuando:
+               - Es una línea de litreo
+               - modoVenta es mayoreo
+          =================================================== -->
           <div class="grid-qty">
             <div class="field qty">
               <label>Cantidad</label>
@@ -119,6 +189,12 @@
             </div>
           </div>
 
+
+          <!-- ==================================================
+               CÁLCULOS POR LÍNEA
+               - unitario(i): precio unitario calculado
+               - subtotalLinea(i): subtotal por cantidad
+          =================================================== -->
           <div class="row-bottom">
             <div class="unit-pill">
               <span>Unitario:</span>
@@ -132,20 +208,33 @@
               <b>{{ subtotalLinea(i) | currency:'MXN':'symbol':'1.0-2' }}</b>
             </div>
           </div>
+
         </div>
       </div>
+
     </div>
 
+
+    <!-- Nota informativa general -->
     <p class="under-note cc-anim-up sec-delay-2">
       Puedes mezclar Destilados y Maguey; cada línea calcula su subtotal.
     </p>
 
+
+
+    <!-- ==================================================
+         SECCIÓN 2: DATOS DEL CLIENTE
+         Subformulario: formGroupName="cliente"
+    =================================================== -->
     <div class="section-title mt-2 cc-anim-up sec-delay-2">
       <h2>2. Datos del cliente</h2>
     </div>
 
     <div class="box cc-anim-up sec-delay-2" formGroupName="cliente">
+
+      <!-- Datos en rejilla -->
       <div class="grid-3-client">
+
         <div class="field">
           <label>Nombre</label>
           <input type="text" formControlName="nombre" />
@@ -161,8 +250,10 @@
           <input type="tel" placeholder="Ej. +52 771 344 2906" formControlName="whatsapp" />
           <div class="hint">Escribe 10 dígitos o con +52.</div>
         </div>
+
       </div>
 
+      <!-- Correo en bloque -->
       <div class="grid-1-left">
         <div class="field">
           <label>Correo</label>
@@ -170,20 +261,34 @@
           <div class="hint">Se acepta cualquier correo válido (gmail, hotmail, etc.).</div>
         </div>
       </div>
+
     </div>
 
+
+
+    <!-- ==================================================
+         SECCIÓN 3: DOMICILIO DE ENTREGA
+         Subformulario: formGroupName="entrega"
+         Incluye autocompletado/sugerencias mediante datalist.
+    =================================================== -->
     <div class="section-title mt-2 cc-anim-up sec-delay-3">
       <h2>3. Domicilio de entrega</h2>
     </div>
 
     <div class="box cc-anim-up sec-delay-3" formGroupName="entrega">
+
+      <!-- Acciones de ubicación -->
       <div class="row-actions">
         <button type="button" class="btn-loc" (click)="usarMiUbicacion()">
           Usar mi ubicación
         </button>
-        <small class="hint">Autocompleta CP/estado/municipio/ciudad si el dispositivo lo permite.</small>
+        <small class="hint">
+          Autocompleta CP/estado/municipio/ciudad si el dispositivo lo permite.
+        </small>
       </div>
 
+
+      <!-- Dirección básica -->
       <div class="grid-4-delivery">
         <div class="field">
           <label>Calle</label>
@@ -206,7 +311,10 @@
         </div>
       </div>
 
+
+      <!-- CP / Estado / Municipio -->
       <div class="grid-3-delivery">
+
         <div class="field cp">
           <label>Código Postal</label>
           <input
@@ -240,8 +348,11 @@
             <option *ngFor="let m of municipiosSugeridos" [value]="m"></option>
           </datalist>
         </div>
+
       </div>
 
+
+      <!-- Ciudad / Localidad -->
       <div class="grid-1-left">
         <div class="field">
           <label>Ciudad / Localidad</label>
@@ -259,6 +370,8 @@
         </div>
       </div>
 
+
+      <!-- Referencia opcional -->
       <div class="field ref">
         <label>Referencia de entrega (opcional)</label>
         <textarea
@@ -268,37 +381,54 @@
           (input)="onDeliveryInteract()"
         ></textarea>
       </div>
+
     </div>
 
+
+
+    <!-- ==================================================
+         SECCIÓN 4: RESUMEN
+         Muestra totales calculados y acciones finales.
+    =================================================== -->
     <div class="section-title mt-2 cc-anim-up sec-delay-4">
       <h2>4. Resumen</h2>
     </div>
 
     <div class="box summary cc-anim-up sec-delay-4">
+
+      <!-- Subtotal de artículos -->
       <div class="sum-row">
         <span>Subtotal de artículos:</span>
         <span class="val">{{ subtotalArticulos() | currency:'MXN':'symbol':'1.0-2' }}</span>
       </div>
 
+      <!-- Envío (informativo, puede ser null) -->
       <div class="sum-row">
         <span>Costo de envío (Se informa y confirma por WhatsApp):</span>
-        <span class="val">{{ envioMx === null ? '---' : (envioMx | currency:'MXN':'symbol':'1.0-2') }}</span>
+        <span class="val">
+          {{ envioMx === null ? '---' : (envioMx | currency:'MXN':'symbol':'1.0-2') }}
+        </span>
       </div>
 
+      <!-- Total estimado -->
       <div class="sum-row total">
         <span>Total estimado:</span>
         <span class="val">{{ totalEstimado() | currency:'MXN':'symbol':'1.0-2' }}</span>
       </div>
 
+
+      <!-- Aviso informativo: requisitos antes de enviar -->
       <div class="cc-alert cc-alert--info">
         <b>Importante:</b> Selecciona al menos 1 producto y completa correctamente tus datos y domicilio.
         Si falta información, <b>no se enviará</b>. Al confirmar el envío <b>ya no podrás hacer cambios</b>.
       </div>
 
+      <!-- Aviso de error del formulario -->
       <div class="cc-alert cc-alert--error" *ngIf="formError">
         {{ formError }}
       </div>
 
+      <!-- Botón final: envío por WhatsApp -->
       <button
         type="button"
         class="btn-wa"
@@ -307,26 +437,45 @@
       >
         Enviar por WhatsApp
       </button>
+
     </div>
+
   </div>
 </div>
 
-<!-- ✅ OVERLAY MODERNO -->
+
+
+<!-- ======================================================
+     OVERLAY DE ESTADO DE ENVÍO
+     Se muestra cuando sendState es distinto de 'idle'.
+     Estados:
+     - sending: preparando envío
+     - success: WhatsApp se abrió correctamente
+     - error: no se pudo abrir WhatsApp
+====================================================== -->
 <div class="cc-send" *ngIf="sendState !== 'idle'">
+
+  <!-- Tarjeta central del overlay con estilos por estado -->
   <div class="cc-send__card"
        [class.is-sending]="sendState === 'sending'"
        [class.is-ok]="sendState === 'success'"
        [class.is-err]="sendState === 'error'">
 
-    <!-- ✅ BOTÓN X (SIEMPRE) -->
-    <button type="button"
-            class="cc-send__x"
-            aria-label="Cerrar"
-            (click)="cerrarEstadoEnvio()">
+    <!-- Botón de cierre (siempre visible) -->
+    <button
+      type="button"
+      class="cc-send__x"
+      aria-label="Cerrar"
+      (click)="cerrarEstadoEnvio()"
+    >
       ×
     </button>
 
+
+    <!-- Encabezado visual del estado -->
     <div class="cc-send__hero">
+
+      <!-- Animación de avión: solo al enviar -->
       <div class="cc-plane-wrap" aria-hidden="true" *ngIf="sendState === 'sending'">
         <div class="cc-plane">
           <span class="cc-plane__trail"></span>
@@ -336,14 +485,19 @@
         </div>
       </div>
 
+      <!-- Iconos de estado (éxito / error) -->
       <div class="cc-status-icon ok" *ngIf="sendState === 'success'" aria-hidden="true"></div>
       <div class="cc-status-icon err" *ngIf="sendState === 'error'" aria-hidden="true"></div>
     </div>
 
+
+    <!-- Títulos por estado -->
     <div class="cc-send__title" *ngIf="sendState === 'sending'">Preparando WhatsApp…</div>
     <div class="cc-send__title" *ngIf="sendState === 'success'">¡Listo! WhatsApp se abrió correctamente</div>
     <div class="cc-send__title" *ngIf="sendState === 'error'">No se pudo abrir WhatsApp</div>
 
+
+    <!-- Mensajes por estado -->
     <div class="cc-send__text" *ngIf="sendState === 'sending'">
       Estamos armando tu pedido. No cierres esta pantalla.
     </div>
@@ -357,8 +511,13 @@
       Intenta de nuevo o habilita ventanas emergentes.
     </div>
 
+
+    <!-- Acciones finales (solo cuando no se está enviando) -->
     <div class="cc-send__actions" *ngIf="sendState !== 'sending'">
-      <button type="button" class="cc-send__btn" (click)="cerrarEstadoEnvio()">Cerrar</button>
+      <button type="button" class="cc-send__btn" (click)="cerrarEstadoEnvio()">
+        Cerrar
+      </button>
     </div>
+
   </div>
 </div>

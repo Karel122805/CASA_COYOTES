@@ -1,66 +1,93 @@
-:host{
-  display:block;
-  font-family: Helvetica, Arial, sans-serif;
-  background:#d9d9d9;
+/* ======================================================
+   NOSOTROS / ABOUT - ESTILOS (SCSS)
+   Incluye:
+   - Hero superior con el mismo estilo visual del resto del sitio
+   - Sección About con hoja clara tipo pergamino (solo CSS/SCSS)
+   - Imagen lateral con borde rojo de marca
+   - Carrusel tipo coverflow con controles
+   - Responsive para tablet y móvil
+   - Ajustes opcionales para que solo se vea la hoja (sin recuadro)
+====================================================== */
 
+
+/* ======================================================
+   BASE DEL COMPONENTE
+   Define tipografía y fondo general, además de variables locales.
+====================================================== */
+:host{
+  display: block;
+  font-family: Helvetica, Arial, sans-serif;
+  background: #d9d9d9;
+
+  /* Espaciado lateral consistente con otras vistas */
   --side: clamp(16px, 4vw, 72px);
+
+  /* Color de borde rojo de marca */
   --red: #b22927;
 }
 
+
+
 /* ======================================================
    HERO
+   Sección superior en dos columnas:
+   - Izquierda: texto
+   - Derecha: imagen cover
 ====================================================== */
 .cm-hero{
-  width:100%;
-  display:flex;
-  align-items:stretch;
+  width: 100%;
+  display: flex;
+  align-items: stretch;
   background: linear-gradient(0deg, #0f2b1b, #15412a);
-  color:#fff;
-  min-height:150px;
+  color: #fff;
+  min-height: 150px;
 }
 
 .cm-hero__left{
-  flex:1;
-  padding:18px var(--side);
-  height:231px;
+  flex: 1;
+  padding: 18px var(--side);
+  height: 231px;
 }
 
 .cm-hero__kicker{
-  font-weight:700;
-  letter-spacing:.3px;
-  font-size:14px;
-  opacity:.95;
+  font-weight: 700;
+  letter-spacing: .3px;
+  font-size: 14px;
+  opacity: .95;
 }
 
 .cm-hero__title{
-  font-weight:700;
-  font-size:26px;
-  margin-top:6px;
+  font-weight: 700;
+  font-size: 26px;
+  margin-top: 6px;
 }
 
 .cm-hero__sub{
-  font-size:12px;
-  margin-top:6px;
-  opacity:.9;
-  max-width:520px;
+  font-size: 12px;
+  margin-top: 6px;
+  opacity: .9;
+  max-width: 520px;
 }
 
 .cm-hero__right{
-  width:45%;
-  min-width:320px;
-  height:231px;
-  overflow:hidden;
+  width: 45%;
+  min-width: 320px;
+  height: 231px;
+  overflow: hidden;
 }
 
 .cm-hero__right img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
+
+
 /* ======================================================
-   CONTENIDO
+   CONTENIDO PRINCIPAL (ABOUT)
+   Define padding general y limita el ancho con una grilla.
 ====================================================== */
 .cc-about{
   padding: 40px var(--side) 36px;
@@ -68,22 +95,26 @@
 
 .cc-about__grid{
   max-width: 1600px;
-  margin: 0 auto;
-  display:grid;
+  margin: 0 auto 26px;
+
+  display: grid;
   grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr);
   gap: clamp(28px, 6vw, 200px);
-  align-items:start;
-  margin-bottom: 26px;
+  align-items: start;
 }
 
-/* ======================================================
-   ✅ HOJA DE PERGAMINO (CLARA) - 100% SCSS, SIN CAFÉ
-   - Sin madera/rollos
-   - Hoja clara con textura y arrugas
-   - Bordes irregulares como hoja real
-   - Sombra suave
-====================================================== */
 
+
+/* ======================================================
+   HOJA / PERGAMINO CLARO
+   Objetivo:
+   - Textura clara con fibras y arrugas suaves
+   - Bordes irregulares (clip-path)
+   - El texto siempre por encima (z-index)
+   Nota:
+   - Al final del archivo hay overrides opcionales para
+     eliminar recuadro/sombra y que se vea solo la hoja.
+====================================================== */
 .cc-about__text{
   position: relative;
   min-width: 0;
@@ -93,24 +124,23 @@
   padding: clamp(24px, 2.4vw, 34px) clamp(18px, 2.2vw, 34px);
   border-radius: 10px;
 
-  /* sombra ligera como “hoja” */
+  /* Sombra tipo hoja (se puede desactivar al final) */
   box-shadow:
     0 18px 28px rgba(0,0,0,.18),
     0 6px 0 rgba(0,0,0,.08);
 
-  /* para que los bordes irregulares no se salgan */
   overflow: hidden;
   isolation: isolate;
 }
 
-/* Hoja (fondo + textura) */
+/* Fondo del pergamino (textura + bordes irregulares) */
 .cc-about__text::before{
-  content:"";
-  position:absolute;
+  content: "";
+  position: absolute;
   inset: 0;
   z-index: 0;
 
-  /* bordes irregulares “recortados” */
+  /* Bordes “recortados” irregulares */
   clip-path: polygon(
     2% 1%, 8% 0%, 16% 1%, 24% 0.4%, 32% 1.2%, 40% 0.2%, 48% 1.1%, 56% 0.4%, 64% 1.2%, 72% 0.2%, 80% 1.1%, 90% 0.4%, 98% 2%,
     99% 10%, 98.4% 18%, 99.2% 26%, 98.6% 34%, 99.4% 42%, 98.7% 50%, 99.3% 58%, 98.6% 66%, 99.2% 74%, 98.4% 82%, 99% 90%,
@@ -119,12 +149,12 @@
   );
 
   background:
-    /* centro claro */
+    /* Centro claro */
     radial-gradient(900px 520px at 50% 35%,
       rgba(255,255,255,.92),
       rgba(255,255,255,0) 62%),
 
-    /* arrugas grandes muy suaves (sin café) */
+    /* Arrugas muy suaves */
     radial-gradient(520px 320px at 18% 30%,
       rgba(0,0,0,.08),
       rgba(0,0,0,0) 64%),
@@ -132,7 +162,7 @@
       rgba(0,0,0,.09),
       rgba(0,0,0,0) 66%),
 
-    /* textura tipo fibra */
+    /* Fibra (vertical) */
     repeating-linear-gradient(
       0deg,
       rgba(0,0,0,.020) 0px,
@@ -140,6 +170,8 @@
       rgba(255,255,255,0) 7px,
       rgba(255,255,255,0) 12px
     ),
+
+    /* Fibra (horizontal) */
     repeating-linear-gradient(
       90deg,
       rgba(0,0,0,.016) 0px,
@@ -148,10 +180,10 @@
       rgba(255,255,255,0) 18px
     ),
 
-    /* base del pergamino CLARO (sin café) */
+    /* Base clara del pergamino */
     linear-gradient(180deg, #fff3d8 0%, #f5e2b8 48%, #fff1d0 100%);
 
-  /* borde tenue sin oscuro */
+  /* Borde interior tenue (se puede desactivar al final) */
   box-shadow:
     inset 0 0 0 1px rgba(0,0,0,.10),
     inset 0 0 0 6px rgba(255,255,255,.22);
@@ -159,13 +191,13 @@
   opacity: 1;
 }
 
-/* viñeta suave (sin quemado) */
+/* Viñeta suave para profundidad */
 .cc-about__text::after{
-  content:"";
-  position:absolute;
+  content: "";
+  position: absolute;
   inset: 0;
   z-index: 1;
-  pointer-events:none;
+  pointer-events: none;
 
   background:
     radial-gradient(900px 520px at 50% 40%,
@@ -175,7 +207,7 @@
   opacity: .35;
 }
 
-/* Texto arriba */
+/* Texto del pergamino */
 .cc-about__text p{
   position: relative;
   z-index: 2;
@@ -190,23 +222,27 @@
   word-break: normal;
 }
 
+/* Citas */
 .cc-about__text .cc-cite{
-  display:block;
-  margin-top:6px;
+  display: block;
+  margin-top: 6px;
   font-size: 13px;
   font-style: italic;
   color: rgba(42,30,20,.80);
   opacity: .95;
 }
 
+
+
 /* ======================================================
-   IMAGEN DERECHA
+   IMAGEN LATERAL
+   Contenedor con borde rojo y proporción fija.
 ====================================================== */
 .cc-about__img{
   border: 3px solid var(--red);
   border-radius: 16px;
-  overflow:hidden;
-  background:#fff;
+  overflow: hidden;
+  background: #fff;
   box-shadow: 0 12px 24px rgba(0,0,0,.14);
 
   width: min(700px, 100%);
@@ -216,38 +252,49 @@
 }
 
 .cc-about__img img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
+
+
 /* ======================================================
-   CARRUSEL (TU MISMO)
+   CARRUSEL (COVERFLOW)
+   Estructura:
+   - Botón izquierda
+   - Track central (slides en 3D)
+   - Botón derecha
 ====================================================== */
 .cc-carousel{
   max-width: 1600px;
   margin: 6px auto 0;
-  display:grid;
+
+  display: grid;
   grid-template-columns: 90px 1fr 90px;
-  align-items:center;
+  align-items: center;
   gap: 18px;
 }
 
+/* Botones del carrusel */
 .cc-arrow{
   width: 64px;
   height: 64px;
   border-radius: 999px;
+
   border: 3px solid rgba(0,0,0,.35);
   background: #fff;
   cursor: pointer;
+
   box-shadow: 0 6px 0 rgba(0,0,0,.15);
   font-size: 34px;
   font-weight: 900;
-  color:#111;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  color: #111;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .cc-arrow:active{
@@ -255,6 +302,7 @@
   box-shadow: 0 4px 0 rgba(0,0,0,.14);
 }
 
+/* Track con perspectiva 3D */
 .cc-track{
   position: relative;
   height: 320px;
@@ -262,39 +310,41 @@
   overflow: hidden;
 }
 
+/* Slide base */
 .cc-slide{
-  position:absolute;
-  top:50%;
-  left:50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   transform-style: preserve-3d;
 
   width: 320px;
   height: 220px;
   border-radius: 8px;
-  overflow:hidden;
+  overflow: hidden;
 
   border: 3px solid var(--red);
-  background:#111;
+  background: #111;
 
   transition:
     transform 320ms cubic-bezier(.2,.9,.2,1),
     opacity 320ms cubic-bezier(.2,.9,.2,1),
     filter 320ms cubic-bezier(.2,.9,.2,1);
 
-  user-select:none;
-  cursor:pointer;
+  user-select: none;
+  cursor: pointer;
   will-change: transform, opacity;
 }
 
 .cc-slide img{
-  width:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  display:block;
-  pointer-events:none;
-  user-select:none;
+  display: block;
+  pointer-events: none;
+  user-select: none;
 }
 
+/* Posiciones del coverflow */
 .cc-slide[data-pos="0"]{
   transform: translate(-50%,-50%) translateX(0) scale(1.08);
   opacity: 1;
@@ -328,8 +378,10 @@
 .cc-slide[data-pos="hidden"]{
   transform: translate(-50%,-50%) scale(.6);
   opacity: 0;
-  pointer-events:none;
+  pointer-events: none;
 }
+
+
 
 /* ======================================================
    RESPONSIVE
@@ -340,8 +392,8 @@
 }
 
 @media (max-width: 980px){
-  .cm-hero{ flex-direction:column; }
-  .cm-hero__right{ width:100%; height:180px; min-width:unset; }
+  .cm-hero{ flex-direction: column; }
+  .cm-hero__right{ width: 100%; height: 180px; min-width: unset; }
 
   .cc-about__grid{
     grid-template-columns: 1fr;
@@ -365,13 +417,19 @@
   .cc-slide{ width: 260px; height: 190px; }
 }
 
-/* Móvil: sin sombras de cards del carrusel */
+/* En móvil: sin sombras en slides */
 @media (max-width: 640px){
   .cc-slide{ box-shadow: none !important; }
   .cc-slide[data-pos="0"]{ box-shadow: none !important; }
 }
 
-/* ✅ QUITAR RECUADRO/SOMBRA: que solo se vea la hoja */
+
+
+/* ======================================================
+   AJUSTES OPCIONALES: SOLO HOJA, SIN RECUADRO EXTERNO
+   Si quieres que el contenedor no tenga sombras ni bordes
+   y se vea únicamente el pergamino (pseudo-elementos).
+====================================================== */
 .cc-about__text{
   box-shadow: none !important;
   border-radius: 0 !important;
@@ -379,13 +437,11 @@
   filter: none !important;
 }
 
-/* La hoja (pseudo-elemento) ya NO debe tener sombra ni borde */
 .cc-about__text::before{
   box-shadow: none !important;
   border-radius: 0 !important;
 }
 
-/* (Opcional) si quieres que el borde se vea aún más “suave” */
 .cc-about__text::after{
-  opacity: .20 !important; /* baja la viñeta */
+  opacity: .20 !important;
 }
