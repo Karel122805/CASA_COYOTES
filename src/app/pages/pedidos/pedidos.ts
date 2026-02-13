@@ -34,20 +34,14 @@ type CatalogoMx = {
 export class PedidosComponent implements OnInit {
   private readonly numeroDestino = '5217713442906';
 
-  // ✅ Estado para overlay de envío
   sendState: 'idle' | 'sending' | 'success' | 'error' = 'idle';
-
-  // ✅ Mensaje visible si falta algo
   formError = '';
 
   categorias: Categoria[] = ['Destilados', 'Maguey', 'Servicios'];
 
-  // ✅ Estados desde catálogo
   estados: string[] = [];
-
   catalogoMx: CatalogoMx | null = null;
 
-  // ✅ sugerencias
   municipiosSugeridos: string[] = [];
   ciudadesSugeridas: string[] = [];
 
@@ -55,6 +49,9 @@ export class PedidosComponent implements OnInit {
   private ciudadesActuales: string[] = [];
 
   envioMx: number | null = null;
+
+  // ✅ ID fijo para litreo (1L)
+  private readonly ID_LITRO = '1l';
 
   productos: Producto[] = [
     // DESTILADOS
@@ -71,6 +68,8 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        // ✅ NUEVO: litreo (solo disponible en mayoreo por UI)
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -80,6 +79,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -89,6 +89,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -98,6 +99,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -107,6 +109,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -116,6 +119,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
     {
@@ -125,6 +129,7 @@ export class PedidosComponent implements OnInit {
       presentaciones: [
         { id: '750', nombre: '750 ml', precio: 500 },
         { id: '200', nombre: '200 ml', precio: 200 },
+        { id: '1l', nombre: '1 Litro (a granel)', precio: 0 },
       ],
     },
 
@@ -220,11 +225,14 @@ export class PedidosComponent implements OnInit {
     },
   ];
 
-  // ====== FORM ======
   form: FormGroup;
+
+  // ✅ Para mostrar aviso automático cuando ya van en domicilio
+  private deliveryTouchedOnce = false;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.form = this.fb.group({
+      modoVenta: ['menudeo'],
       items: this.fb.array([this.createItem()]),
       cliente: this.fb.group({
         nombre: ['', [Validators.required]],
@@ -238,7 +246,7 @@ export class PedidosComponent implements OnInit {
         interior: [''],
         colonia: ['', [Validators.required]],
         cp: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(5)]],
-        estadoId: ['', [Validators.required]], // nombre del estado
+        estadoId: ['', [Validators.required]],
         municipio: ['', [Validators.required]],
         ciudad: ['', [Validators.required]],
         referencia: [''],
@@ -248,9 +256,24 @@ export class PedidosComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCatalogoCompleto();
+
+    // ✅ Si cambian a MENUDERO, quitamos presentación 1L (granel) para evitar inconsistencias
+    this.form.get('modoVenta')?.valueChanges.subscribe(() => {
+      if (this.modoVenta === 'menudeo') {
+        for (let i = 0; i < this.items.length; i++) {
+          const fg = this.items.at(i);
+          if ((fg.get('presentacionId')?.value || '') === this.ID_LITRO) {
+            fg.patchValue({ presentacionId: '' });
+          }
+        }
+      }
+    });
   }
 
-  // ===== Carga de assets/mx-catalogo.json =====
+  get modoVenta(): 'menudeo' | 'mayoreo' {
+    return (this.form.get('modoVenta')?.value ?? 'menudeo') as any;
+  }
+
   cargarCatalogoCompleto(): void {
     this.http.get<CatalogoMx>('assets/mx-catalogo.json').subscribe({
       next: (data) => {
@@ -261,7 +284,6 @@ export class PedidosComponent implements OnInit {
     });
   }
 
-  // ====== FormArray ======
   get items(): FormArray<FormGroup> {
     return this.form.get('items') as FormArray<FormGroup>;
   }
@@ -284,15 +306,17 @@ export class PedidosComponent implements OnInit {
     this.items.removeAt(index);
   }
 
-  // ====== Selects dependientes ======
   productosPorCategoria(categoria: Categoria | ''): Producto[] {
     if (!categoria) return [];
     return this.productos.filter(p => p.categoria === categoria);
   }
 
+  // ✅ IMPORTANTE: el 1L solo aparece si modoVenta === mayoreo (para que no lo elijan en menudeo)
   presentacionesPorProducto(productoId: string): Presentacion[] {
     const prod = this.productos.find(p => p.id === productoId);
-    return prod?.presentaciones ?? [];
+    const pres = prod?.presentaciones ?? [];
+    if (this.modoVenta !== 'mayoreo') return pres.filter(x => x.id !== this.ID_LITRO);
+    return pres;
   }
 
   onCategoriaChange(index: number): void {
@@ -305,7 +329,6 @@ export class PedidosComponent implements OnInit {
     fg.patchValue({ presentacionId: '' });
   }
 
-  // ===== Estado -> Municipios/Ciudades =====
   onEstadoChange(): void {
     const entrega = this.form.get('entrega') as FormGroup;
     const estadoNombre = (entrega.get('estadoId')?.value || '').toString();
@@ -344,8 +367,7 @@ export class PedidosComponent implements OnInit {
   }
 
   onCiudadInput(): void {
-    const entrega = this.form.get('entrega') as FormGroup;
-    const city = (entrega.get('ciudad')?.value || '').toString().trim();
+    const city = (this.form.get('entrega.ciudad')?.value || '').toString().trim();
     this.ciudadesSugeridas = this.filtrar(this.ciudadesActuales, city);
   }
 
@@ -355,20 +377,65 @@ export class PedidosComponent implements OnInit {
     return lista.filter(x => x.toLowerCase().includes(query)).slice(0, 60);
   }
 
+  // ✅ Se llama al escribir en domicilio para mostrar aviso si falta cliente
+  onDeliveryInteract(): void {
+    this.deliveryTouchedOnce = true;
+    this.actualizarAvisoFaltantes();
+  }
+
+  private actualizarAvisoFaltantes(): void {
+    if (!this.deliveryTouchedOnce) return;
+    if (this.sendState !== 'idle') return;
+
+    const nombre = (this.form.get('cliente.nombre')?.value || '').toString().trim();
+    const apellidos = (this.form.get('cliente.apellidos')?.value || '').toString().trim();
+    const whatsapp = (this.form.get('cliente.whatsapp')?.value || '').toString().trim();
+
+    if (!nombre) { this.formError = 'Te falta llenar: Nombre (Datos del cliente).'; return; }
+    if (!apellidos) { this.formError = 'Te falta llenar: Apellidos (Datos del cliente).'; return; }
+    if (!this.whatsappValido(whatsapp)) { this.formError = 'Te falta llenar correctamente: WhatsApp (Datos del cliente).'; return; }
+
+    this.formError = '';
+  }
+
+  // ✅ helper para HTML (hint)
+  esLitreoLinea(index: number): boolean {
+    const fg = this.items.at(index);
+    return (fg.get('presentacionId')?.value || '') === this.ID_LITRO;
+  }
+
   // ====== Precios ======
   unitario(index: number): number {
     const fg = this.items.at(index);
     const productoId = fg.get('productoId')?.value as string;
     const presentacionId = fg.get('presentacionId')?.value as string;
+    const cantidad = Number(fg.get('cantidad')?.value ?? 0);
 
     const prod = this.productos.find(p => p.id === productoId);
     const pres = prod?.presentaciones.find(x => x.id === presentacionId);
-    return pres?.precio ?? 0;
+    const base = pres?.precio ?? 0;
+
+    // ✅ Mayoreo SOLO aplica a DESTILADOS (sal de chinicuil es Maguey => nunca entra)
+    if (!prod || prod.categoria !== 'Destilados') return base;
+
+    // ✅ Si no está mayoreo, destilados a precio normal
+    if (this.modoVenta !== 'mayoreo') return base;
+
+    // ✅ 1) Caja 12 botellas (SOLO 750ml) => $400 si cantidad >= 12
+    if (presentacionId === '750' && cantidad >= 12) return 400;
+
+    // ✅ 2) Litreo 1L (a partir de 10 litros) => $380/L si cantidad >= 10
+    if (presentacionId === this.ID_LITRO) {
+      if (cantidad >= 10) return 380;
+      return 0; // no cumple mínimo, se bloquea el envío en validación
+    }
+
+    // Si no cumple reglas, se queda precio normal del destilado
+    return base;
   }
 
   subtotalLinea(index: number): number {
-    const fg = this.items.at(index);
-    const cantidad = Number(fg.get('cantidad')?.value ?? 0);
+    const cantidad = Number(this.items.at(index).get('cantidad')?.value ?? 0);
     return this.unitario(index) * cantidad;
   }
 
@@ -383,7 +450,6 @@ export class PedidosComponent implements OnInit {
     return this.subtotalArticulos() + envio;
   }
 
-  // ===== Botón: usar ubicación =====
   usarMiUbicacion(): void {
     if (!navigator.geolocation) {
       alert('Tu navegador no soporta geolocalización.');
@@ -426,6 +492,7 @@ export class PedidosComponent implements OnInit {
             setTimeout(() => {
               this.onMunicipioInput();
               this.onCiudadInput();
+              this.onDeliveryInteract();
             }, 0);
           },
           error: () => alert('No se pudo autocompletar con la ubicación (CORS/permiso).'),
@@ -436,17 +503,32 @@ export class PedidosComponent implements OnInit {
     );
   }
 
-  // =========================
-  // ✅ VALIDACIÓN + MENSAJES
-  // =========================
   private whatsappValido(valor: string): boolean {
     const v = (valor || '').toString().replace(/\s+/g, '');
-    // acepta 10 a 13 dígitos, opcional +52
     return /^(?:\+?52)?\d{10,13}$/.test(v);
   }
 
+  // ✅ Validación extra: si eligen 1L deben ser >= 10 litros para enviar
+  private litreoValido(): boolean {
+    if (this.modoVenta !== 'mayoreo') return true;
+
+    for (let i = 0; i < this.items.length; i++) {
+      const fg = this.items.at(i);
+      const productoId = fg.get('productoId')?.value as string;
+      const presentacionId = fg.get('presentacionId')?.value as string;
+      const cantidad = Number(fg.get('cantidad')?.value ?? 0);
+
+      const prod = this.productos.find(p => p.id === productoId);
+      if (!prod) continue;
+
+      if (prod.categoria === 'Destilados' && presentacionId === this.ID_LITRO && cantidad < 10) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   puedeEnviar(): boolean {
-    // 1) Items completos
     const itemsOk = this.items.controls.every((ctrl) => {
       const categoria = ctrl.get('categoria')?.value;
       const productoId = ctrl.get('productoId')?.value;
@@ -456,11 +538,10 @@ export class PedidosComponent implements OnInit {
     });
 
     if (!itemsOk) return false;
+    if (!this.litreoValido()) return false;
 
-    // 2) Validación normal del form
     if (this.form.invalid) return false;
 
-    // 3) WhatsApp con formato válido
     const whatsapp = this.form.get('cliente.whatsapp')?.value;
     if (!this.whatsappValido(whatsapp)) return false;
 
@@ -468,7 +549,6 @@ export class PedidosComponent implements OnInit {
   }
 
   private obtenerPrimerError(): string {
-    // Items
     for (let i = 0; i < this.items.length; i++) {
       const ctrl = this.items.at(i);
       const categoria = ctrl.get('categoria')?.value;
@@ -479,15 +559,21 @@ export class PedidosComponent implements OnInit {
       if (!categoria || !productoId || !presentacionId || cantidad < 1) {
         return `Completa el producto #${i + 1}: categoría, producto, presentación y cantidad (mínimo 1).`;
       }
+
+      // ✅ Error específico litreo
+      const prod = this.productos.find(p => p.id === productoId);
+      if (this.modoVenta === 'mayoreo' && prod?.categoria === 'Destilados' && presentacionId === this.ID_LITRO && cantidad < 10) {
+        return `En el producto #${i + 1}: Para litreo, el mínimo es 10 litros para aplicar $380/L.`;
+      }
     }
 
     const nombre = (this.form.get('cliente.nombre')?.value || '').toString().trim();
     const apellidos = (this.form.get('cliente.apellidos')?.value || '').toString().trim();
     const whatsapp = (this.form.get('cliente.whatsapp')?.value || '').toString().trim();
 
-    if (!nombre) return 'Escribe tu nombre.';
-    if (!apellidos) return 'Escribe tus apellidos.';
-    if (!this.whatsappValido(whatsapp)) return 'Escribe tu WhatsApp correctamente (10 dígitos o con +52).';
+    if (!nombre) return 'Te falta llenar: Nombre (Datos del cliente).';
+    if (!apellidos) return 'Te falta llenar: Apellidos (Datos del cliente).';
+    if (!this.whatsappValido(whatsapp)) return 'Te falta llenar correctamente: WhatsApp (Datos del cliente).';
 
     const calle = (this.form.get('entrega.calle')?.value || '').toString().trim();
     const exterior = (this.form.get('entrega.exterior')?.value || '').toString().trim();
@@ -512,9 +598,6 @@ export class PedidosComponent implements OnInit {
     this.sendState = 'idle';
   }
 
-  // ==================================
-  // ✅ CONFIRMAR + ENVIAR + ESTADO
-  // ==================================
   confirmarYEnviarWhatsApp(): void {
     this.formError = '';
     this.form.markAllAsTouched();
@@ -532,24 +615,19 @@ export class PedidosComponent implements OnInit {
 
     if (!ok) return;
 
-    // ✅ mostrar overlay animado
     this.sendState = 'sending';
 
-    // deja que se vea la animación
     setTimeout(() => {
       const opened = this.enviarWhatsAppConResultado();
       this.sendState = opened ? 'success' : 'error';
     }, 550);
   }
 
-  // ==================================
-  // ✅ WHATSAPP: URL + OPEN con resultado
-  // ==================================
   private buildWhatsAppUrl(): string {
     const cliente = this.form.get('cliente')?.value as any;
     const entrega = this.form.get('entrega')?.value as any;
 
-    const lineas = this.items.controls.map((ctrl) => {
+    const lineas = this.items.controls.map((ctrl, i) => {
       const categoria = ctrl.get('categoria')?.value as Categoria;
       const productoId = ctrl.get('productoId')?.value as string;
       const presentacionId = ctrl.get('presentacionId')?.value as string;
@@ -558,7 +636,7 @@ export class PedidosComponent implements OnInit {
       const prod = this.productos.find(p => p.id === productoId);
       const pres = prod?.presentaciones.find(p => p.id === presentacionId);
 
-      const unit = pres?.precio ?? 0;
+      const unit = this.unitario(i);
       const sub = unit * cantidad;
 
       return `• (${categoria}) ${prod?.nombre ?? ''} - ${pres?.nombre ?? ''} x${cantidad} | Unit: $${unit} | Sub: $${sub}`;
@@ -566,6 +644,7 @@ export class PedidosComponent implements OnInit {
 
     const msg =
 `CASA COYOTES - Pedido
+Modo de compra: ${this.modoVenta.toUpperCase()}
 
 1) Productos
 ${lineas.join('\n')}
@@ -591,7 +670,6 @@ Nota: Favor de confirmar costo de envío.`;
     return `https://wa.me/${this.numeroDestino}?text=${encodeURIComponent(msg)}`;
   }
 
-  /** ✅ retorna true si se abrió ventana, false si popup fue bloqueado */
   private enviarWhatsAppConResultado(): boolean {
     try {
       const url = this.buildWhatsAppUrl();
@@ -602,9 +680,7 @@ Nota: Favor de confirmar costo de envío.`;
     }
   }
 
-  // (si en algún lado todavía llamas enviarWhatsApp, lo dejamos disponible)
   enviarWhatsApp(): void {
-    // compatibilidad: abre sin overlay
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

@@ -8,7 +8,7 @@
 }
 
 /* ======================================================
-   HERO (IGUAL QUE MAGUEY / DESTILADOS)
+   HERO
 ====================================================== */
 .cm-hero{
   width:100%;
@@ -22,7 +22,7 @@
 .cm-hero__left{
   flex:1;
   padding:18px var(--side);
-  height:231px; /* ✅ altura correcta */
+  height:231px;
 }
 
 .cm-hero__kicker{
@@ -60,7 +60,7 @@
 }
 
 /* ======================================================
-   CONTENIDO (TEXTO + ILUSTRACIÓN)
+   CONTENIDO
 ====================================================== */
 .cc-about{
   padding: 40px var(--side) 36px;
@@ -70,43 +70,149 @@
   max-width: 1600px;
   margin: 0 auto;
   display:grid;
-  grid-template-columns: 1.25fr .9fr;
-
-  gap: 200px; /* 🔥 MÁS separación */
-  
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr);
+  gap: clamp(28px, 6vw, 200px);
   align-items:start;
   margin-bottom: 26px;
 }
 
+/* ======================================================
+   ✅ HOJA DE PERGAMINO (CLARA) - 100% SCSS, SIN CAFÉ
+   - Sin madera/rollos
+   - Hoja clara con textura y arrugas
+   - Bordes irregulares como hoja real
+   - Sombra suave
+====================================================== */
 
-/* ✅ TEXTO CORREGIDO */
-.cc-about__text p{
-  margin: 0 0 20px;
-  font-size: 16px;       /* ✅ más grande */
-  line-height: 1.8;      /* ✅ más elegante */
-  color:#111;
-  text-align: justify;   /* ✅ justificado */
+.cc-about__text{
+  position: relative;
+  min-width: 0;
+  max-width: 980px;
+  margin: 0 auto;
+
+  padding: clamp(24px, 2.4vw, 34px) clamp(18px, 2.2vw, 34px);
+  border-radius: 10px;
+
+  /* sombra ligera como “hoja” */
+  box-shadow:
+    0 18px 28px rgba(0,0,0,.18),
+    0 6px 0 rgba(0,0,0,.08);
+
+  /* para que los bordes irregulares no se salgan */
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* Cita */
-.cc-cite{
-  color:#444;
-  font-style: italic;
-  font-size: 14px;
+/* Hoja (fondo + textura) */
+.cc-about__text::before{
+  content:"";
+  position:absolute;
+  inset: 0;
+  z-index: 0;
+
+  /* bordes irregulares “recortados” */
+  clip-path: polygon(
+    2% 1%, 8% 0%, 16% 1%, 24% 0.4%, 32% 1.2%, 40% 0.2%, 48% 1.1%, 56% 0.4%, 64% 1.2%, 72% 0.2%, 80% 1.1%, 90% 0.4%, 98% 2%,
+    99% 10%, 98.4% 18%, 99.2% 26%, 98.6% 34%, 99.4% 42%, 98.7% 50%, 99.3% 58%, 98.6% 66%, 99.2% 74%, 98.4% 82%, 99% 90%,
+    98% 98%, 90% 99.2%, 82% 98.8%, 74% 99.5%, 66% 98.9%, 58% 99.6%, 50% 98.8%, 42% 99.5%, 34% 98.9%, 26% 99.6%, 18% 98.8%, 10% 99.3%, 2% 98%,
+    1% 90%, 1.4% 82%, 0.8% 74%, 1.3% 66%, 0.7% 58%, 1.2% 50%, 0.6% 42%, 1.2% 34%, 0.7% 26%, 1.3% 18%, 0.8% 10%
+  );
+
+  background:
+    /* centro claro */
+    radial-gradient(900px 520px at 50% 35%,
+      rgba(255,255,255,.92),
+      rgba(255,255,255,0) 62%),
+
+    /* arrugas grandes muy suaves (sin café) */
+    radial-gradient(520px 320px at 18% 30%,
+      rgba(0,0,0,.08),
+      rgba(0,0,0,0) 64%),
+    radial-gradient(560px 340px at 82% 60%,
+      rgba(0,0,0,.09),
+      rgba(0,0,0,0) 66%),
+
+    /* textura tipo fibra */
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,.020) 0px,
+      rgba(0,0,0,.020) 1px,
+      rgba(255,255,255,0) 7px,
+      rgba(255,255,255,0) 12px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0,0,0,.016) 0px,
+      rgba(0,0,0,.016) 1px,
+      rgba(255,255,255,0) 10px,
+      rgba(255,255,255,0) 18px
+    ),
+
+    /* base del pergamino CLARO (sin café) */
+    linear-gradient(180deg, #fff3d8 0%, #f5e2b8 48%, #fff1d0 100%);
+
+  /* borde tenue sin oscuro */
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,.10),
+    inset 0 0 0 6px rgba(255,255,255,.22);
+
+  opacity: 1;
+}
+
+/* viñeta suave (sin quemado) */
+.cc-about__text::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events:none;
+
+  background:
+    radial-gradient(900px 520px at 50% 40%,
+      rgba(0,0,0,0) 58%,
+      rgba(0,0,0,.08) 100%);
+
+  opacity: .35;
+}
+
+/* Texto arriba */
+.cc-about__text p{
+  position: relative;
+  z-index: 2;
+
+  margin: 0 0 20px;
+  font-size: clamp(14px, 1.1vw, 16px);
+  line-height: 1.85;
+  color: #2a1e14;
+  text-align: justify;
+
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+
+.cc-about__text .cc-cite{
   display:block;
   margin-top:6px;
-  opacity:.95;
+  font-size: 13px;
+  font-style: italic;
+  color: rgba(42,30,20,.80);
+  opacity: .95;
 }
 
-/* Imagen lateral */
+/* ======================================================
+   IMAGEN DERECHA
+====================================================== */
 .cc-about__img{
   border: 3px solid var(--red);
   border-radius: 16px;
   overflow:hidden;
   background:#fff;
   box-shadow: 0 12px 24px rgba(0,0,0,.14);
-  width: 500px;
-  height: 550px;
+
+  width: min(700px, 100%);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 10 / 11;
 }
 
 .cc-about__img img{
@@ -117,7 +223,7 @@
 }
 
 /* ======================================================
-   CARRUSEL (NO MODIFICADO)
+   CARRUSEL (TU MISMO)
 ====================================================== */
 .cc-carousel{
   max-width: 1600px;
@@ -135,12 +241,10 @@
   border: 3px solid rgba(0,0,0,.35);
   background: #fff;
   cursor: pointer;
-
   box-shadow: 0 6px 0 rgba(0,0,0,.15);
   font-size: 34px;
   font-weight: 900;
   color:#111;
-
   display:flex;
   align-items:center;
   justify-content:center;
@@ -158,7 +262,6 @@
   overflow: hidden;
 }
 
-/* Slide base */
 .cc-slide{
   position:absolute;
   top:50%;
@@ -172,7 +275,6 @@
 
   border: 3px solid var(--red);
   background:#111;
-  box-shadow: 0 12px 26px rgba(0,0,0,.20);
 
   transition:
     transform 320ms cubic-bezier(.2,.9,.2,1),
@@ -184,8 +286,6 @@
   will-change: transform, opacity;
 }
 
-.cc-slide:hover{ filter:none; }
-
 .cc-slide img{
   width:100%;
   height:100%;
@@ -195,7 +295,6 @@
   user-select:none;
 }
 
-/* Posiciones */
 .cc-slide[data-pos="0"]{
   transform: translate(-50%,-50%) translateX(0) scale(1.08);
   opacity: 1;
@@ -235,25 +334,58 @@
 /* ======================================================
    RESPONSIVE
 ====================================================== */
+@media (max-width: 1100px){
+  .cc-about__grid{ gap: clamp(22px, 4.5vw, 80px); }
+  .cc-about__img{ width: min(460px, 100%); }
+}
+
 @media (max-width: 980px){
   .cm-hero{ flex-direction:column; }
   .cm-hero__right{ width:100%; height:180px; min-width:unset; }
 
-  .cc-about__grid{ grid-template-columns: 1fr; }
+  .cc-about__grid{
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .cc-about__img{
+    margin: 0 auto;
+    width: min(520px, 100%);
+    aspect-ratio: 16 / 12;
+  }
 
   .cc-carousel{ grid-template-columns: 70px 1fr 70px; }
-
   .cc-track{ height: 300px; }
-
   .cc-slide{ width: 300px; height: 210px; }
 }
 
 @media (max-width: 560px){
-  .cc-arrow{
-    width: 54px;
-    height: 54px;
-    font-size: 30px;
-  }
-
+  .cc-about{ padding: 28px var(--side) 26px; }
+  .cc-arrow{ width: 54px; height: 54px; font-size: 30px; }
   .cc-slide{ width: 260px; height: 190px; }
+}
+
+/* Móvil: sin sombras de cards del carrusel */
+@media (max-width: 640px){
+  .cc-slide{ box-shadow: none !important; }
+  .cc-slide[data-pos="0"]{ box-shadow: none !important; }
+}
+
+/* ✅ QUITAR RECUADRO/SOMBRA: que solo se vea la hoja */
+.cc-about__text{
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  filter: none !important;
+}
+
+/* La hoja (pseudo-elemento) ya NO debe tener sombra ni borde */
+.cc-about__text::before{
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+/* (Opcional) si quieres que el borde se vea aún más “suave” */
+.cc-about__text::after{
+  opacity: .20 !important; /* baja la viñeta */
 }

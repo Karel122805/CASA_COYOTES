@@ -23,11 +23,12 @@ type InstaPost = {
 export class Nosotros implements OnInit, OnDestroy {
 
   posts: InstaPost[] = [
-    { image: 'assets/35.jpeg', url: 'https://www.instagram.com/p/REEMPLAZA_35/', alt: 'Publicación Casa Coyotes 35' },
-    { image: 'assets/36.jpeg', url: 'https://www.instagram.com/p/REEMPLAZA_36/', alt: 'Publicación Casa Coyotes 36' },
-    { image: 'assets/37.jpeg', url: 'https://www.instagram.com/p/REEMPLAZA_37/', alt: 'Publicación Casa Coyotes 37' },
-    { image: 'assets/38.jpeg', url: 'https://www.instagram.com/p/REEMPLAZA_38/', alt: 'Publicación Casa Coyotes 38' },
-    { image: 'assets/39.jpeg', url: 'https://www.instagram.com/p/REEMPLAZA_39/', alt: 'Publicación Casa Coyotes 39' }
+    { image: 'assets/34.jpeg', url: 'https://www.instagram.com/p/C1nCrZ3uem8/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 35' },
+    { image: 'assets/35.jpeg', url: 'https://www.instagram.com/p/C6bVF1eOsap/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 35' },
+    { image: 'assets/36.jpeg', url: 'https://www.instagram.com/p/C-naF2OOasj/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 36' },
+    { image: 'assets/37.jpeg', url: 'https://www.instagram.com/p/DGyBvTFvjoo/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 37' },
+    { image: 'assets/38.jpeg', url: 'https://www.instagram.com/p/DJ1pmFkuIKz/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 38' },
+    { image: 'assets/39.jpeg', url: 'https://www.instagram.com/p/DKGPpRaOtHO/?utm_source=ig_web_copy_link', alt: 'Publicación Casa Coyotes 39' }
   ];
 
   active = 2;

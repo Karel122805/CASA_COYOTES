@@ -9,7 +9,6 @@
   <img class="hero-caja right" src="assets/caja.jpg" alt="Caja" />
 </section>
 
-
 <div class="pedidos-wrap" [formGroup]="form">
   <div class="pedidos-card cc-anim-up card-delay">
 
@@ -18,20 +17,57 @@
     </div>
 
     <div class="box box-products cc-anim-up sec-delay-1">
+
+      <!-- ✅ MODO DE COMPRA -->
+      <div class="cc-sale-mode">
+        <div class="cc-sale-mode__label">Tipo de compra:</div>
+
+        <label class="cc-sale-mode__opt">
+          <input type="radio" formControlName="modoVenta" value="menudeo" />
+          Menudeo
+        </label>
+
+        <label class="cc-sale-mode__opt">
+          <input type="radio" formControlName="modoVenta" value="mayoreo" />
+          Mayoreo
+        </label>
+      </div>
+
+      <!-- ✅ INFO MAYOREO (SOLO DESTILADOS) -->
+      <div class="cc-mayoreo" *ngIf="modoVenta === 'mayoreo'">
+        <b>Mayoreo (solo Destilados)</b>
+        <ul>
+          <li>
+            Caja con 12 botellas (750 ml):
+            <b>$400</b> por botella (mas envio).
+          </li>
+          <li>
+            Precio por litreo (a partir de 10 litros):
+            <b>$380</b> por litro (mas envio).
+          </li>
+        </ul>
+        <div class="cc-mayoreo__note">
+          *Consulta disponibilidad antes de hacer tu pedido. **Consulta precio a granel.
+        </div>
+      </div>
+
       <button type="button" class="btn-add" (click)="addItem()">+ Agregar producto</button>
 
       <div class="items" formArrayName="items">
-        <div class="item cc-anim-up item-pop"
-             *ngFor="let fg of items.controls; let i = index"
-             [formGroupName]="i">
-
+        <div
+          class="item cc-anim-up item-pop"
+          *ngFor="let fg of items.controls; let i = index"
+          [formGroupName]="i"
+        >
           <div class="item-top">
             <div class="item-name">Producto #{{ i + 1 }}</div>
 
-            <button type="button"
-                    class="btn-remove"
-                    (click)="removeItem(i)"
-                    [disabled]="items.length === 1">
+            <button
+              type="button"
+              class="btn-remove"
+              (click)="removeItem(i)"
+              [disabled]="items.length === 1"
+            >
               Quitar
             </button>
           </div>
@@ -49,7 +85,10 @@
               <label>Producto</label>
               <select formControlName="productoId" (change)="onProductoChange(i)">
                 <option value="">-- Selecciona ---</option>
-                <option *ngFor="let p of productosPorCategoria(fg.get('categoria')?.value)" [value]="p.id">
+                <option
+                  *ngFor="let p of productosPorCategoria(fg.get('categoria')?.value)"
+                  [value]="p.id"
+                >
                   {{ p.nombre }}
                 </option>
               </select>
@@ -59,7 +98,10 @@
               <label>Presentación</label>
               <select formControlName="presentacionId">
                 <option value="">-- Selecciona ---</option>
-                <option *ngFor="let pr of presentacionesPorProducto(fg.get('productoId')?.value)" [value]="pr.id">
+                <option
+                  *ngFor="let pr of presentacionesPorProducto(fg.get('productoId')?.value)"
+                  [value]="pr.id"
+                >
                   {{ pr.nombre }}
                 </option>
               </select>
@@ -70,6 +112,10 @@
             <div class="field qty">
               <label>Cantidad</label>
               <input type="number" min="1" formControlName="cantidad" />
+
+              <div class="hint" *ngIf="esLitreoLinea(i) && modoVenta === 'mayoreo'">
+                Para litreo, mínimo 10 litros para aplicar $380/L.
+              </div>
             </div>
           </div>
 
@@ -86,7 +132,6 @@
               <b>{{ subtotalLinea(i) | currency:'MXN':'symbol':'1.0-2' }}</b>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -142,34 +187,40 @@
       <div class="grid-4-delivery">
         <div class="field">
           <label>Calle</label>
-          <input type="text" formControlName="calle" />
+          <input type="text" formControlName="calle" (input)="onDeliveryInteract()" />
         </div>
 
         <div class="field">
           <label>No. exterior</label>
-          <input type="text" formControlName="exterior" />
+          <input type="text" formControlName="exterior" (input)="onDeliveryInteract()" />
         </div>
 
         <div class="field">
           <label>No. interior (opcional)</label>
-          <input type="text" formControlName="interior" />
+          <input type="text" formControlName="interior" (input)="onDeliveryInteract()" />
         </div>
 
         <div class="field">
           <label>Colonia / Fracc.</label>
-          <input type="text" formControlName="colonia" />
+          <input type="text" formControlName="colonia" (input)="onDeliveryInteract()" />
         </div>
       </div>
 
       <div class="grid-3-delivery">
         <div class="field cp">
           <label>Código Postal</label>
-          <input type="text" maxlength="5" placeholder="5 dígitos" formControlName="cp" />
+          <input
+            type="text"
+            maxlength="5"
+            placeholder="5 dígitos"
+            formControlName="cp"
+            (input)="onDeliveryInteract()"
+          />
         </div>
 
         <div class="field">
           <label>Estado</label>
-          <select formControlName="estadoId" (change)="onEstadoChange()">
+          <select formControlName="estadoId" (change)="onEstadoChange(); onDeliveryInteract()">
             <option value="">-- Selecciona ---</option>
             <option *ngFor="let e of estados" [value]="e">{{ e }}</option>
           </select>
@@ -183,7 +234,7 @@
             formControlName="municipio"
             placeholder="Escribe para ver sugerencias"
             list="cc-municipios"
-            (input)="onMunicipioInput()"
+            (input)="onMunicipioInput(); onDeliveryInteract()"
           />
           <datalist id="cc-municipios">
             <option *ngFor="let m of municipiosSugeridos" [value]="m"></option>
@@ -199,7 +250,7 @@
             formControlName="ciudad"
             placeholder="Escribe para ver sugerencias"
             list="cc-ciudades"
-            (input)="onCiudadInput()"
+            (input)="onCiudadInput(); onDeliveryInteract()"
           />
           <datalist id="cc-ciudades">
             <option *ngFor="let c of ciudadesSugeridas" [value]="c"></option>
@@ -210,8 +261,12 @@
 
       <div class="field ref">
         <label>Referencia de entrega (opcional)</label>
-        <textarea rows="4" formControlName="referencia"
-                  placeholder="Entre calles, color de portón, punto de referencia etc."></textarea>
+        <textarea
+          rows="4"
+          formControlName="referencia"
+          placeholder="Entre calles, color de portón, punto de referencia etc."
+          (input)="onDeliveryInteract()"
+        ></textarea>
       </div>
     </div>
 
@@ -235,38 +290,43 @@
         <span class="val">{{ totalEstimado() | currency:'MXN':'symbol':'1.0-2' }}</span>
       </div>
 
-      <!-- ✅ MENSAJE FIJO -->
       <div class="cc-alert cc-alert--info">
         <b>Importante:</b> Selecciona al menos 1 producto y completa correctamente tus datos y domicilio.
         Si falta información, <b>no se enviará</b>. Al confirmar el envío <b>ya no podrás hacer cambios</b>.
       </div>
 
-      <!-- ✅ MENSAJE DE ERROR (si falta algo) -->
       <div class="cc-alert cc-alert--error" *ngIf="formError">
         {{ formError }}
       </div>
 
-      <!-- ✅ BOTÓN CON VALIDACIÓN + CONFIRMACIÓN + ESTADO -->
-      <button type="button"
-              class="btn-wa"
-              [disabled]="!puedeEnviar() || sendState === 'sending'"
-              (click)="confirmarYEnviarWhatsApp()">
+      <button
+        type="button"
+        class="btn-wa"
+        [disabled]="!puedeEnviar() || sendState === 'sending'"
+        (click)="confirmarYEnviarWhatsApp()"
+      >
         Enviar por WhatsApp
       </button>
     </div>
-
   </div>
 </div>
 
-<!-- ✅ OVERLAY MODERNO (SCSS) -->
+<!-- ✅ OVERLAY MODERNO -->
 <div class="cc-send" *ngIf="sendState !== 'idle'">
   <div class="cc-send__card"
        [class.is-sending]="sendState === 'sending'"
        [class.is-ok]="sendState === 'success'"
        [class.is-err]="sendState === 'error'">
 
+    <!-- ✅ BOTÓN X (SIEMPRE) -->
+    <button type="button"
+            class="cc-send__x"
+            aria-label="Cerrar"
+            (click)="cerrarEstadoEnvio()">
+      ×
+    </button>
+
     <div class="cc-send__hero">
-      <!-- Avión de papel (CSS puro) -->
       <div class="cc-plane-wrap" aria-hidden="true" *ngIf="sendState === 'sending'">
         <div class="cc-plane">
           <span class="cc-plane__trail"></span>
